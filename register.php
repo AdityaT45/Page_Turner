@@ -1,132 +1,61 @@
-<?php
-include 'config.php';
-
-function containsOnlyText($input) {
-    // Regular expression to match only alphabetic characters and spaces
-    $pattern = '/^[a-zA-Z\s]+$/';
-
-    // Check if the input matches the pattern
-    return preg_match($pattern, $input);
-}
-
-if (isset($_POST['submit'])) {
-  $name = mysqli_real_escape_string($conn, $_POST['Name']);
-  $Sname = mysqli_real_escape_string($conn, $_POST['Sname']);
-  $username = mysqli_real_escape_string($conn, $_POST['username']);
-  $email = mysqli_real_escape_string($conn, $_POST['email']);
-  $password = mysqli_real_escape_string($conn, ($_POST['password']));
-  $cpassword = mysqli_real_escape_string($conn, ($_POST['cpassword']));
-  $user_type = 'User';
-
-  $select_users = $conn->query("SELECT * FROM users_info WHERE email = '$email'") or die('query failed');
-
-  if (mysqli_num_rows($select_users) != 0) {
-    echo '<script>alert("User Already Exists !!!");</script>';
-  } else {
-    if ($password != $cpassword) {
-      echo '<script>alert("Please Check your Passwords AGAIN !!!\nConfirm Password not Matched...");</script>';
-    } else {
-      if (empty($name)) {
-        $message[] = 'Please Enter Your Name';
-      } elseif (!containsOnlyText($name)) {
-        $message[] = 'Name should contain only text';
-      } elseif (empty($Sname)) {
-        $message[] = 'Please Enter Your Surname';
-      } elseif (empty($username)) {
-        $message[] = 'Please Enter Username';
-      } elseif (empty($email)) {
-        $message[] = 'Please Enter Your Email';
-      } elseif (empty($password)) {
-        $message[] = 'Please Enter a Password';
-      } else {
-        mysqli_query($conn, "INSERT INTO users_info(`name`, `surname`, `username`, `email`, `password`, `user_type`) VALUES('$name','$Sname','$username','$email','$password','$user_type')") or die('Query failed');
-        echo '<script>alert("Registration Successfull !!!");</script>';
-        header("Location: login.php"); // Fix for redirection
-        exit(); // Added to prevent further execution
-      }
-    }
-  }
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="css/register.css  " />
-  <title>Registration</title>
-
-  <style>
-    .container form .link {
-      text-decoration: none;
-      color: white;
-      border-radius: 17px;
-      padding: 8px 18px;
-      margin: 0px 10px;
-      background: rgb(0, 0, 0);
-      font-size: 20px;
-    }
-
-    .container form .link:hover {
-      background: rgb(0, 167, 245);
-    }
-
-    hr {
-      margin: auto;
-      width: 80%;
-      height: 8px;
-      border: 2px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Page Turner</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { min-height: 100vh; display: flex; justify-content: center; align-items: center; background: #fdfce5; }
+        .split-form { display: flex; background: white; border-radius: 20px; overflow: hidden; max-width: 800px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .image-side { flex: 1; background: #0f3859; padding: 2rem; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; }
+        #lottie-animation { width: 350px; height: 350px; }
+        .form-side { flex: 1; padding: 3rem; }
+        h1 { text-align: center; margin-bottom: 1rem; color: #333; }
+        input { width: 100%; padding: 10px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 5px; outline: none; transition: border-color 0.3s; }
+        input:focus { border-color: #0f3859; }
+        button { width: 100%; padding: 12px; background: #0f3859; color: white; border: none; border-radius: 25px; cursor: pointer; font-size: 16px; font-weight: bold; transition: transform 0.3s, background 0.3s; }
+        button:hover { transform: translateY(-2px); background: #092a42; }
+        .error-message { text-align: center; color: red; font-weight: bold; margin-bottom: 1rem; }
+        .link { text-decoration: none; color: #FF6B6B; font-weight: bold; display: block; text-align: center; margin-top: 1rem; }
+        .link:hover { text-decoration: underline; }
+    </style>
 </head>
-
 <body>
-  <?php
-  if (isset($message)) {
-    foreach ($message as $message) {
-      echo '
-        <div class="message" id= "messages"><span>' . $message . '</span>
+    <div class="split-form">
+        <div class="image-side">
+            <div id="lottie-animation"></div>
+            <h1><span class="text-warning">PAGE</span><span>TURNER</span></h1>
         </div>
-        ';
-    }
-  }
-  ?>
-  <div class="container">
-    <form action="" method="post">
-      <h3 style="color:white;">Register to Use <a href="index.php"><span>Bookflix & </span><span>Chill</span></a>
-      </h3>
-      <hr>
-      <hr>
-      <input type="text" name="Name" placeholder="Enter Name" id="name" required class="text_field" pattern="[A-Za-z\s]+" title="Please enter text only">
-      <input type="text" name="Sname" placeholder="Enter Surname" required class="text_field" pattern="[A-Za-z\s]+" title="Please enter text only">
-      <input type="email" name="email" placeholder="Enter Email Id" required class="text_field">
-      <input type="text" name="username" placeholder="Enter Username" required class="text_field">
-      <input type="password" name="password" placeholder="Enter password" required class="text_field" maxlength="8" minlength="6">
-      <input type="password" name="cpassword" placeholder="Confirm password" required class="text_field" maxlength="8" minlength="6">
-      <hr>
-      <hr>
-      <input type="submit" value="Register" name="submit" class="btn text_field"
-        style="background: rgba(0, 167, 245,0.7);">
-      <p>Already have a Account?<br>
-        <a class="link" href="login.php">Login</a>
-        <a class="link" href="index.php">Back</a>
-      </p>
-    </form>
-  </div>
-  <?php include 'index_footer.php' ?>
-
-  <script>
-    setTimeout(() => {
-      const box = document.getElementById('messages');
-
-      // hides element (still takes up space on page)
-      box.style.display = 'none';
-    }, 2000);
-  </script>
+        <div class="form-side">
+            <h1>Sign Up</h1>
+            <?php if (isset($message)) { echo "<p class='error-message'>$message</p>"; } ?>
+            <form action="send_otp.php" method="post">
+                <input type="text" name="Name" placeholder="First Name" required>
+                <input type="text" name="Sname" placeholder="Surname" required>
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required minlength="6" maxlength="8">
+                <input type="password" name="cpassword" placeholder="Confirm Password" required minlength="6" maxlength="8">
+                <button type="submit" name="send_otp">Send OTP</button>
+            </form>
+            <form action="verify_otp.php" method="post">
+                <input type="hidden" name="email" id="otp-email">
+                <input type="text" name="otp" placeholder="Enter OTP" required>
+                <button type="submit" name="verify_otp">Verify OTP</button>
+            </form>
+            <a class="link" href="login.php" id="login-link">Already have an account? Login</a>
+        </div>
+    </div>
+    <script>
+        lottie.loadAnimation({
+            container: document.getElementById('lottie-animation'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'images/Animation - 1741021320383.json'
+        });
+    </script>
 </body>
-
 </html>

@@ -3,19 +3,19 @@ include 'config.php';
 session_start();
 
 if (isset($_POST['login'])) {
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-    if (empty($username)) {
-        $message[] = 'Please Enter Username';
+    if (empty($email)) {
+        $message = 'Please Enter Email';
     } elseif (empty($password)) {
-        $message[] = 'Please Enter Password';
+        $message = 'Please Enter Password';
     } else {
-        $select_users = $conn->query("SELECT * FROM users_info WHERE username = '$username' and password = '$password'") or die('query failed');
+        // Check login with email
+        $select_users = $conn->query("SELECT * FROM users_info WHERE email = '$email' and password = '$password'") or die('Query Failed');
     }
 
     if (mysqli_num_rows($select_users) == 1) {
-
         $row = mysqli_fetch_assoc($select_users);
 
         if ($row['user_type'] == 'Admin') {
@@ -23,15 +23,14 @@ if (isset($_POST['login'])) {
             $_SESSION['admin_email'] = $row['email'];
             $_SESSION['admin_id'] = $row['Id'];
             header('location:admin_index.php');
-
         } elseif ($row['user_type'] == 'User') {
             $_SESSION['user_name'] = $row['name'];
             $_SESSION['user_email'] = $row['email'];
             $_SESSION['user_id'] = $row['Id'];
-            header('location:all_books.php');
+            header('location:index.php');
         }
     } else {
-        echo '<script>alert("Incorrect Credentials...");</script>';
+        $message = "Incorrect Email or Password!";
     }
 }
 ?>
@@ -40,71 +39,209 @@ if (isset($_POST['login'])) {
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/register.css" />
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Page Turner</title>
+
+    <!-- Lottie Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
+
     <style>
-        .container form .link {
-            text-decoration: none;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background:#fdfce5;
+        }
+
+        /* Split Layout Form */
+        .split-form {
+            display: flex;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .split-form .image-side {
+            flex: 1;
+            background: #0f3859;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             color: white;
-            border-radius: 17px;
-            padding: 8px 18px;
-            margin: 0px 10px;
-            background: rgb(0, 0, 0);
-            font-size: 20px;
+            text-align: center;
+            position: relative;
         }
 
-        .container form .link:hover {
-            background: rgb(0, 167, 245);
+        /* Lottie Animation */
+        #lottie-animation {
+            width: 350px;
+            height: 350px;
         }
 
-        hr {
-            margin: auto;
-            width: 80%;
-            height: 10px;
-            border: 2px;
+        .split-form .form-side {
+            flex: 1;
+            padding: 3rem;
         }
+
+        .split-form h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .split-form input {
+            width: 100%;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border: none;
+            border-bottom: 2px solid #eee;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .split-form input:focus {
+            border-bottom-color: #0f3859;
+        }
+
+        .split-form button {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            background: #0f3859;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .split-form button:hover {
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            text-align: center;
+            color: red;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .link {
+            text-decoration: none;
+            color: #FF6B6B;
+            font-weight: bold;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+        form {
+    width: 100%;
+    max-width: 350px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 10px;
+    color: #0f3859;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #0f3859;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #0f3859;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: transform 0.3s, background 0.3s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    background: #092a42;
+}
     </style>
 </head>
 
 <body>
-    <!-- <php
-    if (isset($message)) {
-        foreach ($message as $message) {
-            echo '
-        <div class="message" id="messages"><span>' . $message . '</span>
-        </div>
-        ';
-        }
-    }
-    ?> -->
-    <div class="container">
-        <form action="" method="post">
-            <h3 style="color:white;">Login to <a href="index.php"><span>Page </span><span>Turner</span></a></h3>
-            <hr>
-            <input type="text" name="username" placeholder="Enter Username" required class="text_field">
-            <input type="password" name="password" placeholder="Enter Password" required class="text_field">
-            <hr>
-            <hr>
-            <input type="submit" value="Login" name="login" class="btn text_field"
-                style="background: rgba(0, 167, 245,0.7);">
-            <p>Don't have an Account?<br>
-                <a class="link" href="register.php">Register</a>
-                <a class="link" href="index.php">Back</a>
-            </p>
-        </form>
-    </div>
-    
-    <script>
-        setTimeout(() => {
-            const box = document.getElementById('messages');
 
-            // hides element (still takes up space on page)
-            box.style.display = 'none';
-        }, 2000);
+    <div class="split-form">
+        <!-- Left Side with Lottie Animation -->
+        <div class="image-side">
+           
+            <div id="lottie-animation"></div>
+            <h1><span class="text-warning">PAGE</span><span>TURNER</span></h1>
+        </div>
+
+        <!-- Right Side -->
+        <div class="form-side">
+            <h1>Sign In</h1>
+
+            <!-- Display Error Message -->
+            <?php if (isset($message)) { echo "<p class='error-message'>$message</p>"; } ?>
+
+            <form action="" method="post">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" placeholder="Enter Email" required>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" placeholder="Enter Password" required>
+
+    <button type="submit" name="login">Login</button>
+</form>
+
+            <p style="text-align: center; margin-top: 1rem;">
+                Don't have an account? <a class="link" href="register.php">Register</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- JavaScript to Load Lottie Animation -->
+    <script>
+        lottie.loadAnimation({
+            container: document.getElementById('lottie-animation'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'images/Animation - 1741021320383.json' // Your Lottie animation file
+        });
     </script>
+
 </body>
 
 </html>

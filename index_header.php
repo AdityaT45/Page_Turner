@@ -1,22 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <link rel="stylesheet" href="./css/hello.css">
     <style>
         * {
             text-decoration: none;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        header {
+            background: #0f3859;
+            padding: 15px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo a {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav a {
+            color: white;
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+        }
+
+        .nav a::before {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            background: #00c6ff;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: 0.3s ease-in-out;
+        }
+
+        .nav a:hover::before {
+            width: 100%;
+        }
+
+        .user-search {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .search-icon img {
+            width: 25px;
+            transition: transform 0.3s;
+        }
+
+        .search-icon:hover {
+            border-color: #00c6ff;
+            box-shadow: 0 0 15px #00c6ff;
+        }
+
+        .search-icon:hover img {
+            transform: scale(1.2);
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid white;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+        }
+
+        .user-avatar:hover {
+            border-color: #00c6ff;
+            box-shadow: 0 0 15px #00c6ff;
+            transform: scale(1.1);
         }
 
         .sub-menu-wrap {
             position: fixed;
             top: 9%;
-            right: -1%;
+            right: 2%;
             width: 320px;
             max-height: 0px;
             overflow: hidden;
             transition: max-height 0.5s;
             z-index: 100;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
         }
 
         .sub-menu-wrap.open-menu {
@@ -24,84 +127,39 @@
         }
 
         .sub-menu {
-            background: #fff;
+            background: transparent;
             padding: 20px;
             margin: 10px;
             border-bottom-right-radius: 16px;
             border-bottom-left-radius: 16px;
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-        }
-
-        .user-info h3 {
-            font-weight: 500;
-        }
-
-        .user-info img {
-            width: 60px;
-            border-radius: 50%;
-            margin-right: 15px;
-        }
-
-        .user-pic {
-            height: 52px;
-            width: 52px;
-            border-radius: 30px;
-            margin-left: 2px;
-            cursor: pointer;
-        }
-
-        .sub-menu hr {
-            border: 0;
-            height: 2px;
-            width: 90%;
-            margin: 12px 10px;
-            color: red;
-        }
-
         .sub-menu-link {
             display: flex;
             align-items: center;
             text-decoration: none;
-            color: #525252;
-            margin: 12px e;
+            color: #fff;
+            margin: 12px 0;
+            transition: 0.3s;
+        }
+
+        .sub-menu-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
         }
 
         .sub-menu-link p {
             width: 100%;
         }
 
-        .sub-menu-link img {
-            width: 40px;
-            background: #e5e5e5;
-            border-radius: 50%;
-            padding: 8px;
-            margin-right: 15px;
-        }
-
-        .sub-menu-link span {
-            font-size: 22px;
-            transition: transform 0.5s;
-        }
-
-        .sub-menu-link:hover span {
-            transform: translateX(15px);
-        }
-
-        .sub-menu-link:hover p {
-            font-weight: 600;
-        }
-
-        .link_btn {
-            background-color: brown;
-            padding: 6px;
-            border-radius: 10px;
-            margin-left: 10px;
+        .user-name {
             color: white;
-            font-weight: 500;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -109,33 +167,13 @@
 <body>
     <header>
         <div class="logo">
-            <a href="index.php"><span>Page</span>
-                <span class="me">Turner</span></a>
+            <a href="index.php"><span class="text-warning">Page</span> <span class="me text-light">Turner</span></a>
         </div>
-        <!--  -->
-        <!-- <nav>
-            <ul>
-                <li><a href="#"> Home </a></li>
-                <li>
-                    Category
-                    <ul class="drop-down">
-                        <li><a href="index.php#New"> New Arrived </a></li>
-                        <li><a href="index.php#Adventure"> Adventure </a></li>
-                        <li><a href="index.php#Magical"> Magical </a></li>
-                        <li><a href="index.php#Knowledge"> Knowledge </a></li>
-                        <li><a href="all_books.php"> All Books </a></li>
-                    </ul>
-                </li>
-                <li><a href="contact-us.php"> Contact US </a></li>
-                <li><a href="cart.php"> Cart </a></li>
-                <li><a href="orders.php"> Orders </a></li>
-            </ul>
-        </nav> -->
-        <!--  -->
+
         <div class="nav">
             <a href="index.php">Home</a>
             <div class="dropdown">
-                <button class="dropbtn" style="font-weight: 600;">Category</button>
+                <button class="dropbtn">Category</button>
                 <div class="dropdown-content">
                     <a href="index.php#New">New Arrived</a>
                     <a href="index.php#Adventure">Adventure</a>
@@ -144,81 +182,46 @@
                     <a href="all_books.php">All Books</a>
                 </div>
             </div>
-            <a href="contact-us.php">Contact US</a>
+            <a href="contact-us.php">Contact Us</a>
             <a href="cart.php">Cart</a>
             <a href="orders.php">Orders</a>
         </div>
-        <div class="user-box" style="display: flex; align-items:center;">
-            <a class="Btn" href="search_books.php"><img style="height:30px; border:none;" src="./images/search.png"
-                    alt=""></a>&nbsp;&nbsp;
+
+        <div class="user-search">
+            <a href="search_books.php" class="search-icon bg-light">
+                <img src="./images/search.png" alt="Search">
+            </a>
+
             <?php
+            session_start();
             if (isset($_SESSION['user_name'])) {
-                echo '<img style="" src="images/user.png" class="user-pic" onclick="toggleMenu()" />';
+                echo '<div class="user-name" onclick="toggleMenu()">' . $_SESSION['user_name'] . '</div>';
             } else {
-                echo '<img style="" src="images/user.png" class="user-pic" onclick="toggleMenu2()" />';
+                echo '<img src="images/user.png" class="user-avatar" onclick="redirectToLogin()" />';
             }
             ?>
         </div>
     </header>
+
     <div class="sub-menu-wrap" id="subMenu">
         <div class="sub-menu">
-            <div class="user-info">
-                <img src="images/user.png" />
-                <div class="user-info" style="display: block;">
-                    <h3>Hello,
-                        <?php echo $_SESSION['user_name'] ?>
-                    </h3>
-                    <h6>
-                        <?php echo $_SESSION['user_email'] ?>
-                    </h6>
-                </div>
-            </div>
-            <hr />
-            <a href="cart.php" class="sub-menu-link">
-                <p>Cart</p>
-                <span>></span>
-            </a>
-            <a href="contact-us.php" class="sub-menu-link">
-                <p>Contact Us</p>
-                <span>></span>
-            </a>
-            <a href="orders.php" class="sub-menu-link">
-                <p>Order history</p>
-                <span>></span>
-            </a>
-            <a href="logout.php" class="sub-menu-link">
-                <p
-                    style="background-color: red; border-radius:8px; text-align:center; color:white; font-weight:600; margin-top:5px; padding:5px;">
-                    Logout</p>
-            </a>
+            <a href="cart.php" class="sub-menu-link"><p>Cart</p></a>
+            <a href="contact-us.php" class="sub-menu-link"><p>Contact Us</p></a>
+            <a href="orders.php" class="sub-menu-link"><p>Order History</p></a>
+            <a href="logout.php" class="sub-menu-link"><p style="background:red;color:white;text-align:center;">Logout</p></a>
         </div>
     </div>
-    <!-- ------------------------------------------------------------------------------------------------------- -->
-    <div class="sub-menu-wrap" id="subMenu2">
-        <div class="sub-menu">
-            <a href="login.php" class="sub-menu-link">
-                <p>Login</p>
-                <span>></span>
-            </a>
-            <a href="register.php" class="sub-menu-link">
-                <p>Register</p>
-                <span>></span>
-            </a>
-        </div>
-    </div>
-
 
     <script>
         let subMenu = document.getElementById("subMenu");
+
         function toggleMenu() {
             subMenu.classList.toggle("open-menu");
         }
 
-        let subMenu2 = document.getElementById("subMenu2");
-        function toggleMenu2() {
-            subMenu2.classList.toggle("open-menu");
+        function redirectToLogin() {
+            window.location.href = "login.php";
         }
     </script>
 </body>
-
 </html>

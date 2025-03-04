@@ -1,0 +1,54 @@
+background color-#fdfce5
+
+headder color-#0f3859
+
+
+<?php
+session_start();
+include 'config.php'; // Database connection
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'vendor/autoload.php'; // Load PHPMailer
+
+if (isset($_POST['send_otp'])) {
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+
+    // Check if the email is registered in users table
+    $check_user = $conn->query("SELECT * FROM users WHERE email='$email'");
+    if ($check_user->num_rows == 0) {
+        echo "<script>alert('Email is not registered! Please sign up first.'); window.location.href='register.php';</script>";
+        exit();
+    }
+
+    // Generate 6-digit OTP
+    $otp = rand(100000, 999999);
+
+    // Store OTP in the database (overwrite existing OTP)
+    $conn->query("REPLACE INTO otp_verification (email, otp) VALUES ('$email', '$otp')");
+
+    // Send email using PHPMailer
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'gandhibapu009@gmail.com'; // Replace with your email
+        $mail->Password = 'bskv bfps vtuk zlhz'; // Replace with your email password
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom('gandhibapu009@gmail.com', 'Page Turner');
+        $mail->addAddress($email);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Your OTP Code';
+        $mail->Body = "<h3>Your OTP Code is: <b>$otp</b></h3>";
+
+        $mail->send();
+        echo "<script>alert('OTP sent successfully!'); window.location.href='register.php';</script>";
+    } catch (Exception $e) {
+        echo "<script>alert('Error sending OTP: {$mail->ErrorInfo}'); window.location.href='register.php';</script>";
+    }
+}
+?>

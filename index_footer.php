@@ -1,132 +1,123 @@
 <head>
-    <style>
-        * {
-            text-decoration: none;
-            list-style: none;
-            color: black;
-        }
+<style>
+/* Footer Styling */
+.footer {
+    background: #0f3859;
+    color: white;
+    padding: 40px 0;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
 
-        footer {
-            background-color: rgba(0, 0, 0, 0.2);
-        }
+.container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1100px;
+    margin: auto;
+}
 
-        h2 {
-            font-size: 20px;
-            font-weight: 700
-        }
+/* Bigger Logo */
+.footer-logo {
+    font-size: 32px; /* Increased size */
+    /* font-weight: bold; */
+    color: white;
+    text-transform: uppercase;
+    margin-top: 40px;
+}
 
-        .flex {
-            display: flex;
-        }
+.footer-logo span {
+    color: #fdfce5;
+}
 
-        ul li:not(:first-child) {
-            padding: 5px;
-        }
+.footer-links h3,
+.footer-contact h3 {
+    font-size: 18px;
+    color: #fdfce5;
+    margin-bottom: 10px;
+}
 
-        .short_links ul {
-            margin: 0 110px;
-        }
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
 
-        .sub_main .dropdown .dropbtn {
-            border: none;
-            cursor: pointer;
-        }
+.footer-links ul li {
+    margin: 8px 0;
+}
 
-        /* The container <div> - needed to position the dropdown content */
-        .sub_main .dropdown {
-            position: relative;
-            display: inline-block;
-        }
+.footer-links ul li a {
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
 
-        /* Dropdown Content (Hidden by Default) */
-        .sub_main .dropdown .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #CCCCCC;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
+.footer-links ul li a:hover {
+    color: #fdfce5;
+}
 
-        /* Links inside the dropdown */
-        .sub_main .dropdown .dropbtn .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
+.footer-contact p {
+    margin: 5px 0;
+    font-size: 14px;
+}
 
-        /* Change color of dropdown links on hover */
-        .sub_main .dropdown .dropbtn .dropdown-content a:hover {
-            background-color: #f1f1f1
-        }
+.footer-contact a {
+    color: #fdfce5;
+    text-decoration: none;
+}
 
-        /* Show the dropdown menu on hover */
-        .sub_main .dropdown:hover .dropdown-content {
-            display: flex;
-            flex-direction: column;
-        }
-    </style>
-    <link rel="stylesheet" href="./css/hello.css">
+.footer-bottom {
+    background: #09273e;
+    padding: 12px;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.footer-bottom span {
+    color: #fdfce5;
+    font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-logo {
+        font-size: 36px; /* Even bigger logo on mobile */
+    }
+}
+</style>
+    <!-- <link rel="stylesheet" href="./css/hello.css"> -->
 </head>
 
-<footer style="margin: 0 auto 0;">
-    <div class="main" style="align-items:center; padding:40px; ">
-        <div class="sub_main">
-            <div class="short_links flex" style="justify-content:center; ">
-                <ul>
-                    <h2>Quick Links</h2>
-                    <li><a href="index.php">Home</a></li>
-                    <li>
-                        <div class="dropdown">
-                            <a class="dropbtn">Category</a>
-                            <div class="dropdown-content">
-                                <a href="index.php#New">New</a>
-                                <a href="index.php#Adventure">Adventure</a>
-                                <a href="index.php#Magical">Magical</a>
-                                <a href="index.php#Knowledge">Knowledge</a>
-                                <a href="">Love</a>
-                                <a href="">Sci-Fi</a>
-                                <a href="">Novel</a>
-                                <a href="">Health</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li><a href="about-us.php">About Us</a></li>
-                </ul>
-                <?php
-                if (isset($_SESSION['user_name'])) {
-                    echo '
-                <ul class="account">
-                    <h2>Account</h2>
-                    <!--<li><a href="">Profile</a></li>-->
-                    <li><a href="cart.php">Cart</a></li>
-                    <li><a href="orders.php">Order History</a></li>
-                    <li><a href="logout.php">LogOut</a></li>
-                </ul>';
-                }
-                ?>
-                <ul>
-                    <h2>Contact</h2>
-                    <!-- <li><a href="contact-us.php">Contact Form</a></li> -->
-                    <li>+91 9999999999</li>
-                    <li>contact@Page Turner.com</li>
-                    <li>Address : Pune</li>
-                </ul>
-            </div>
+<div class="footer-container">
+<footer class="footer">
+    <div class="container">
+        <div class="footer-logo text-warning">Page<span>Turner</span></div>
+
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Category</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
         </div>
-        <br>
-        <div style="align-items:center; justify-content:center; margin:20px 0 0 ;" class="flex">
-            <p>Designed By <strong style="color:gold;">Yash and Shubham </strong> | Copyright &copy;
-                <script>
-                    document.write(new Date().getFullYear())
-                </script> All Rights are reserved by &nbsp;
-            </p>
-            <div style="font-size: 30px;" class="logo">
-                <a><span style="font-size: 20px;">Page </span>
-                    <span style="font-size: 20px; font-weight: 500; color:black;">Turner</span>
-                </a>
-            </div>
+
+        <div class="footer-contact">
+            <h3>Contact</h3>
+            <p>📞 +91 8767062627</p>
+            <p>📧 <a href="mailto:contact@PageTurner.com">contact@PageTurner.com</a></p>
+            <p>📍 Address: Pune</p>
         </div>
     </div>
+
+    <div class="footer-bottom">
+        <p>Designed By <span>Aditya Todmal</span> | Copyright © 2025 All Rights Reserved</p>
+    </div>
 </footer>
+</div>

@@ -81,11 +81,219 @@ if (isset($_POST['add_to_cart'])) {
             color: rgb(3, 227, 235);
             font-size: 15px;
         }
+        .carousel-inner img {
+        height: 50vh; /* 60% of the viewport height */
+        object-fit: cover; /* Ensures the image fills the area */
+    }
+    .banner {
+    width: 70%; /* Set width to 70% */
+    height: 200px; /* Adjust height as needed */
+    background: #f0f0f0; /* Light gray background */
+    margin: 20px auto; /* Center it horizontally */
+    border: 2px dashed #ccc; /* Dashed border to indicate an empty box */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #888;
+}
+.empty {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ff4d4d;  /* Red color to highlight the message */
+    background: #ffecec; /* Light red background */
+    padding: 15px 20px;
+    border-radius: 8px;
+    width: fit-content;
+    margin: 40px auto;
+    border: 2px solid #ff9999; /* Soft border for visibility */
+    box-shadow: 0px 4px 8px rgba(255, 77, 77, 0.2);
+}
+
+
+/* //authors  */
+.featured-authors {
+    width: 90%;
+    margin: auto;
+    padding: 40px 0;
+    text-align: center;
+}
+
+
+.swiper {
+    width: 100%;
+    padding-bottom: 50px;
+}
+
+.swiper-slide {
+    background: #fff;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    transition: 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.swiper-slide:hover {
+    transform: scale(1.05);
+}
+
+.author-img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 0px;
+    border: 3px solid #0f3859;
+    /* height: 430px; */
+}
+
+.author-name {
+    font-size: 18px;
+    font-weight: 800;
+    color: #333;
+    margin-top: 10px;
+}
+
+
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .carousel-container {
+            width: 90%;
+            margin: auto;
+            padding: 10px 0;
+            position: relative;
+         
+        }
+
+        .swiper {
+            width: 100%;
+            padding-bottom: 30px;
+        }
+
+        .swiper-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s ease-in-out;
+    width: 220px; /* Adjusted for better spacing */
+    height: 430px; /* Increased card height */
+    position: relative;
+}
+
+
+        .swiper-slide:hover {
+            transform: scale(1.05);
+        }
+
+        .book-img {
+    width: 180px;  /* Increased size */
+    height: 250px; /* Increased size */
+    object-fit: cover;
+    margin: auto;
+    display: block; /* Centered */
+    border-radius: 5px;
+}
+
+        .book-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .author {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .stars {
+            color: #FFD700;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .price {
+    font-size: 22px; /* Increased size */
+    font-weight: bold;
+    color: red; /* Changed to red */
+}
+
+
+        .old-price {
+            text-decoration: line-through;
+            color: gray;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
+        .discount-badge {
+            position: absolute;
+            background: red;
+            color: white;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 5px;
+            top: 10px;
+            left: 10px;
+        }
+
+        .swiper-button-next, .swiper-button-prev {
+            color: #0f3859;
+        }
     </style>
 </head>
 
-<body style="background-color:lightgrey;">
+<body style="background-color:#fdfce5" >
     <?php include 'index_header.php' ?>
+
+    <!-- Carousel Section -->
+    <div id="bookCarousel" class="carousel slide container-fluid" data-bs-ride="carousel" data-bs-interval="2000">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://wowslider.com/sliders/demo-77/data1/images/road220058.jpg" class="d-block w-100" alt="Slide 1">
+        </div>
+        <div class="carousel-item">
+            <img src="https://wowslider.com/sliders/demo-77/data1/images/idaho239691_1920.jpg" class="d-block w-100" alt="Slide 2">
+        </div>
+        <div class="carousel-item">
+            <img src="https://wowslider.com/sliders/demo-77/data1/images/idaho239691_1920.jpg" class="d-block w-100" alt="Slide 3">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- ✅ Empty Banner Box -->
+<div class="banner"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <?php
     if (isset($message)) {
         foreach ($message as $message) {
@@ -104,220 +312,316 @@ if (isset($_POST['add_to_cart'])) {
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
         </script>
 
+    
+
     <section id="New">
-        <div class="container px-5 mx-auto">
-            <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 " style="color: rgb(0, 167, 245);">
+        <div class="container-fluid mx-auto  ">
+            <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
             
-                New Arrived
+            New Arrived
             </h2>
         </div>
     </section>
-    <section class="show-products">
-        <div class="box-container">
-
-            <?php
-            $select_book = mysqli_query($conn, "SELECT * FROM `book_info` ORDER BY date DESC LIMIT 8") or die('query failed');
-            if (mysqli_num_rows($select_book) > 0) {
-                while ($fetch_book = mysqli_fetch_assoc($select_book)) {
-                    ?>
-
-                    <div class="box" style="width: 255px; height:355px;">
-                        <a href="#?details=<?php echo $fetch_book['bid'];
-                        echo '-name=', $fetch_book['name']; ?>"> <img style="height: 200px;width: 125px;margin: auto;"
-                                class="books_images" src="added_books/<?php echo $fetch_book['image']; ?>" alt=""></a>
-
-                        <div style="font-weight: 500; font-size:18px; text-align: center; " class="name">
-                            <?php echo $fetch_book['name']; ?>
-                        </div>
-
-                        <div class="price">Price: ₹
-                            <?php echo $fetch_book['price']; ?>/-
-                        </div>
-                        <!-- <button name="add_cart"><img src="./images/cart.png" alt=""></button> -->
-                        <form action="" method="POST">
-                            <input class="hidden_input" type="hidden" name="book_name"
-                                value="<?php echo $fetch_book['name'] ?>">
-                            <input class="hidden_input" type="hidden" name="book_id" value="<?php echo $fetch_book['bid'] ?>">
-                            <input class="hidden_input" type="hidden" name="book_image"
-                                value="<?php echo $fetch_book['image'] ?>">
-                            <input class="hidden_input" type="hidden" name="book_price"
-                                value="<?php echo $fetch_book['price'] ?>">
-                            <button name="add_to_cart"><img src="./images/cart.png" alt="Add to cart"></button>&nbsp;&nbsp;|
-                            <a href="login.php?details=<?php echo $fetch_book['bid'];
-                            echo '-name=', $fetch_book['name']; ?>" class="update_btn">Know more?Login!!</a>
-                        </form>
-                        <!-- <button name="add_to_cart" ><img src="./images/cart.png" alt="Add to cart"></button> -->
-                        <!-- <input type="submit" name="add_cart" value="cart"> -->
-                    </div>
-                    <?php
+    <section class="carousel-container ">
+        <div class="swiper ">
+            <div class="swiper-wrapper">
+                <?php
+                $select_book = mysqli_query($conn, "SELECT * FROM `book_info` ORDER BY date DESC LIMIT 12") or die('Query failed');
+                if (mysqli_num_rows($select_book) > 0) {
+                    while ($fetch_book = mysqli_fetch_assoc($select_book)) {
+                        $discount = rand(10, 30); // Random discount percentage
+                        $discounted_price = $fetch_book['price'] - ($fetch_book['price'] * ($discount / 100));
+                ?>
+                        <div class="swiper-slide">
+    <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
+    <a href="login.php?details=<?php echo $fetch_book['bid']; ?>">
+        <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
+    </a>
+    <div class="book-name"><?php echo $fetch_book['name']; ?></div>
+    <div class="author">by <?php echo $fetch_book['author']; ?></div>
+    <div class="stars">⭐⭐⭐⭐⭐</div>
+    <div class="price">₹<?php echo number_format($discounted_price, 2); ?>
+        <span class="old-price">₹<?php echo number_format($fetch_book['price'], 2); ?></span>
+    </div>
+</div>
+                <?php
+                    }
+                } else {
+                    echo '<p class="empty">No Books Available!</p>';
                 }
-            } else {
-                echo '<p class="empty">NO Books added yet!</p>';
-            }
-            ?>
+                ?>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
         </div>
     </section>
-    <section id="Adventure">
-        <div class="container px-5 mx-auto">
-            <h2 class="text-gray-400 m-8 font-extrabold text-4xl text-center border-t-2 text-red-800"
-                style="color: rgb(0, 167, 245);">
-                Adventure
+    <section id="Best Sellers">
+        <div class="container-fluid mx-auto  ">
+            <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
+            
+            Best Sellers
             </h2>
         </div>
     </section>
-    <section class="show-products">
-        <div class="box-container">
-
-            <?php
-            $select_book = mysqli_query($conn, "SELECT * FROM `book_info` where category='Adventure' LIMIT 8") or die('query failed');
-            if (mysqli_num_rows($select_book) > 0) {
-                while ($fetch_book = mysqli_fetch_assoc($select_book)) {
-                    ?>
-
-                    <div class="box" style="width: 255px;height: 355px;">
-                        <a href="#?details=<?php echo $fetch_book['bid'];
-                        echo '-name=', $fetch_book['name']; ?>"> <img style="height: 200px;width: 125px;margin: auto;"
-                                class="books_images" src="added_books/<?php echo $fetch_book['image']; ?>" alt=""></a>
-
-                        <div style="font-weight: 500; font-size:18px; text-align: center; " class="name">
-                            <?php echo $fetch_book['name']; ?>
-                        </div>
-
-                        <div class="price">Price: ₹
-                            <?php echo $fetch_book['price']; ?>/-
-                        </div>
-                        <!-- <button name="add_cart"><img src="./images/cart.png" alt=""></button> -->
-                        <form action="" method="POST">
-                            <input class="hidden_input" type="hidden" name="book_name"
-                                value="<?php echo $fetch_book['name'] ?>">
-                            <input class="hidden_input" type="hidden" name="book_image"
-                                value="<?php echo $fetch_book['image'] ?>">
-                            <input class="hidden_input" type="hidden" name="book_price"
-                                value="<?php echo $fetch_book['price'] ?>">
-                            <button name="add_to_cart"><img src="./images/cart.png" alt="Add to cart"></button>&nbsp;&nbsp;|
-                            <a href="login.php?details=<?php echo $fetch_book['bid'];
-                            echo '-name=', $fetch_book['name']; ?>" class="update_btn">Know More</a>
-                        </form>
-                        <!-- <button name="add_to_cart" ><img src="./images/cart.png" alt="Add to cart"></button> -->
-                        <!-- <input type="submit" name="add_cart" value="cart"> -->
-                    </div>
-                    <?php
+    <section class="carousel-container ">
+        <div class="swiper ">
+            <div class="swiper-wrapper">
+                <?php
+                $select_book = mysqli_query($conn, "SELECT * FROM `book_info` ORDER BY date DESC LIMIT 12") or die('Query failed');
+                if (mysqli_num_rows($select_book) > 0) {
+                    while ($fetch_book = mysqli_fetch_assoc($select_book)) {
+                        $discount = rand(10, 30); // Random discount percentage
+                        $discounted_price = $fetch_book['price'] - ($fetch_book['price'] * ($discount / 100));
+                ?>
+                        <div class="swiper-slide">
+    <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
+    <a href="login.php?details=<?php echo $fetch_book['bid']; ?>">
+        <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
+    </a>
+    <div class="book-name"><?php echo $fetch_book['name']; ?></div>
+    <div class="author">by <?php echo $fetch_book['author']; ?></div>
+    <div class="stars">⭐⭐⭐⭐⭐</div>
+    <div class="price">₹<?php echo number_format($discounted_price, 2); ?>
+        <span class="old-price">₹<?php echo number_format($fetch_book['price'], 2); ?></span>
+    </div>
+</div>
+                <?php
+                    }
+                } else {
+                    echo '<p class="empty">No Books Available!</p>';
                 }
-            } else {
-                echo '<p class="empty">no products added yet!</p>';
-            }
-            ?>
+                ?>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
         </div>
     </section>
+
+
+    <div class="banner"></div>
+
+
     <section id="Magical">
-
-        <div class="container px-5 mx-auto">
-            <h2 class="text-gray-400 m-8 font-extrabold text-4xl text-center border-t-2 text-red-800"
-                style="color: rgb(0, 167, 245);">
-                Magical
+        <div class="container-fluid mx-auto  ">
+            <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
+            
+            Magical
             </h2>
         </div>
     </section>
-    <section class="show-products">
-        <div class="box-container">
+    <section class="carousel-container">
 
+    <div class="swiper">
+        <div class="swiper-wrapper">
             <?php
-            $select_book = mysqli_query($conn, "SELECT * FROM `book_info` where category='Magical' LIMIT 8") or die('query failed');
+            $select_book = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='Magical' ORDER BY date DESC LIMIT 12") or die('Query failed');
             if (mysqli_num_rows($select_book) > 0) {
                 while ($fetch_book = mysqli_fetch_assoc($select_book)) {
-                    ?>
-
-                    <div class="box" style="width: 255px;height: 355px;">
-                        <a href="#?details=<?php echo $fetch_book['bid'];
-                        echo '-name=', $fetch_book['name']; ?>"> <img style="height: 200px;width: 125px;margin: auto;"
-                                class="books_images" src="added_books/<?php echo $fetch_book['image']; ?>" alt=""></a>
-
-                        <div style="font-weight: 500; font-size:18px; text-align: center;" class="name">
-                            <?php echo $fetch_book['name']; ?>
+                    $discount = rand(10, 30); // Random discount percentage
+                    $discounted_price = $fetch_book['price'] - ($fetch_book['price'] * ($discount / 100));
+            ?>
+                    <div class="swiper-slide">
+                        <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
+                        <a href="login.php?details=<?php echo $fetch_book['bid']; ?>">
+                            <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
+                        </a>
+                        <div class="book-name"><?php echo $fetch_book['name']; ?></div>
+                        <div class="author">by <?php echo $fetch_book['author']; ?></div>
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <div class="price">₹<?php echo number_format($discounted_price, 2); ?>
+                            <span class="old-price">₹<?php echo number_format($fetch_book['price'], 2); ?></span>
                         </div>
-                        <div class="price">Price : ₹
-                            <?php echo $fetch_book['price']; ?>/-
-                        </div>
-                        <!-- <button name="add_cart"><img src="./images/cart.png" alt=""></button> -->
-                        <form action="" method="POST">
-                            <input class="hidden_input" type="hidden" name="book_name"
-                                value="<?php echo $fetch_book['name'] ?>">
-                            <input class="hidden_input" type="hidden" name="book_image"
-                                value="<?php echo $fetch_book['image'] ?>">
-                            <input class="hidden_input" type="hidden" name="book_price"
-                                value="<?php echo $fetch_book['price'] ?>">
-                            <button name="add_to_cart"><img src="./images/cart.png" alt="Add to cart"></button>&nbsp;&nbsp;|
-                            <a href="login.php?details=<?php echo $fetch_book['bid'];
-                            echo '-name=', $fetch_book['name']; ?>" class="update_btn">Know More</a>
-                        </form>
-                        <!-- <button name="add_to_cart" ><img src="./images/cart.png" alt="Add to cart"></button> -->
-                        <!-- <input type="submit" name="add_cart" value="cart"> -->
                     </div>
-                    <?php
+            <?php
                 }
             } else {
-                echo '<p class="empty">no products added yet!</p>';
+                echo '<p class="empty">No Books Available!</p>';
             }
             ?>
         </div>
-    </section>
-    <section id="Knowledge">
 
-        <div class="container px-5 mx-auto">
-            <h2 class="text-gray-400 m-8 font-extrabold text-4xl text-center border-t-2 text-red-800"
-                style="color: rgb(0, 167, 245);">
-                Knowledge
+        <!-- Navigation Buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+
+<section id="Knowledge">
+        <div class="container-fluid mx-auto  ">
+            <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
+            
+            Knowledge
             </h2>
         </div>
     </section>
-    <section class="show-products">
-        <div class="box-container">
+    <section class="carousel-container">
 
+    <div class="swiper">
+        <div class="swiper-wrapper">
             <?php
-            $select_book = mysqli_query($conn, "SELECT * FROM `book_info` Where category='Knowledge' LIMIT 8") or die('query failed');
+            $select_book = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='Knowledge' ORDER BY date DESC LIMIT 12") or die('Query failed');
             if (mysqli_num_rows($select_book) > 0) {
                 while ($fetch_book = mysqli_fetch_assoc($select_book)) {
-                    ?>
-
-                    <div class="box" style="width: 255px;height: 355px;">
-                        <a href="#?details=<?php echo $fetch_book['bid'];
-                        echo '-name=', $fetch_book['name']; ?>"> <img style="height: 200px;width: 125px;margin: auto;"
-                                class="books_images" src="added_books/<?php echo $fetch_book['image']; ?>" alt=""></a>
-
-                        <div style="font-weight: 500; font-size:18px; text-align: center;" class="name">
-                            <?php echo $fetch_book['name']; ?>
-                        </div>
-
-                        <div class="price">Price: ₹
-                            <?php echo $fetch_book['price']; ?>/-
+                    $discount = rand(10, 30); // Random discount
+                    $discounted_price = $fetch_book['price'] - ($fetch_book['price'] * ($discount / 100));
+            ?>
+                    <div class="swiper-slide">
+                        <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
+                        <a href="login.php?details=<?php echo $fetch_book['bid']; ?>">
+                            <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
+                        </a>
+                        <div class="book-name"><?php echo $fetch_book['name']; ?></div>
+                        <div class="author">by <?php echo $fetch_book['author']; ?></div>
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <div class="price">₹<?php echo number_format($discounted_price, 2); ?>
+                            <span class="old-price">₹<?php echo number_format($fetch_book['price'], 2); ?></span>
                         </div>
                         <form action="" method="POST">
-                            <input class="hidden_input" type="hidden" name="book_name"
-                                value="<?php echo $fetch_book['name'] ?>">
-                            <input class="hidden_input" type="hidden" name="book_image"
-                                value="<?php echo $fetch_book['image'] ?>">
-                            <input class="hidden_input" type="hidden" name="book_price"
-                                value="<?php echo $fetch_book['price'] ?>">
-                            <button name="add_to_cart"><img src="./images/cart.png" alt="Add to cart"></button>&nbsp;&nbsp;|
-                            <a href="login.php?details=<?php echo $fetch_book['bid'];
-                            echo '-name=', $fetch_book['name']; ?>" class="update_btn">Know More</a>
+                            <input type="hidden" name="book_name" value="<?php echo $fetch_book['name'] ?>">
+                            <input type="hidden" name="book_image" value="<?php echo $fetch_book['image'] ?>">
+                            <input type="hidden" name="book_price" value="<?php echo $fetch_book['price'] ?>">
+                            <button name="add_to_cart"><img src="./images/cart.png" alt="Add to cart"></button>
+                            &nbsp; | 
+                            <a href="login.php?details=<?php echo $fetch_book['bid']; ?>" class="update_btn">Know More</a>
                         </form>
-                        <!-- <button name="add_to_cart" ><img src="./images/cart.png" alt="Add to cart"></button> -->
-                        <!-- <input type="submit" name="add_cart" value="cart"> -->
                     </div>
-                    <?php
+            <?php
                 }
             } else {
-                echo '<p class="empty">no products added yet!</p>';
+                echo '<p class="empty">No Books Available!</p>';
             }
             ?>
         </div>
-        <div>
-            <br>
-            <br>
+
+        <!-- Navigation Buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+
+<div class="banner"></div>
+
+<section id="Box Set">
+        <div class="container-fluid mx-auto  ">
+            <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
+            
+            Box Set
+            </h2>
         </div>
     </section>
-    <!--<php include 'index_footer.php'; ?> -->
+<section class="carousel-container">
+   
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <?php
+            $select_box_sets = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='Box Set' ORDER BY date DESC LIMIT 10") or die('Query failed');
+            if (mysqli_num_rows($select_box_sets) > 0) {
+                while ($fetch_set = mysqli_fetch_assoc($select_box_sets)) {
+                    $discount = rand(15, 40); // Random discount
+                    $discounted_price = $fetch_set['price'] - ($fetch_set['price'] * ($discount / 100));
+            ?>
+                    <div class="swiper-slide">
+                        <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
+                        <a href="login.php?details=<?php echo $fetch_set['bid']; ?>">
+                            <img src="added_books/<?php echo $fetch_set['image']; ?>" alt="Box Set Image" class="book-img">
+                        </a>
+                        <div class="book-name"><?php echo $fetch_set['name']; ?></div>
+                        <div class="author">by <?php echo $fetch_set['author']; ?></div>
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <div class="price">₹<?php echo number_format($discounted_price, 2); ?>
+                            <span class="old-price">₹<?php echo number_format($fetch_set['price'], 2); ?></span>
+                        </div>
+                        <form action="" method="POST">
+                            <input type="hidden" name="book_name" value="<?php echo $fetch_set['name'] ?>">
+                            <input type="hidden" name="book_image" value="<?php echo $fetch_set['image'] ?>">
+                            <input type="hidden" name="book_price" value="<?php echo $fetch_set['price'] ?>">
+                            <button name="add_to_cart"><img src="./images/cart.png" alt="Add to cart"></button>
+                            &nbsp; | 
+                            <a href="login.php?details=<?php echo $fetch_set['bid']; ?>" class="update_btn">Know More</a>
+                        </form>
+                    </div>
+            <?php
+                }
+            } else {
+                echo '<p class="empty">No Box Sets Available!</p>';
+            }
+            ?>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+
+<section class="featured-authors">
+<section id="Magical">
+        <div class="container-fluid mx-auto  ">
+            <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
+            
+            Featured Author
+            </h2>
+        </div>
+    </section>
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+                     alt="Author Image" class="author-img">
+                <div class="author-name">N. H. Apte</div>
+            </div>
+            <div class="swiper-slide">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+                     alt="Author Image" class="author-img">
+                <div class="author-name">Author Name 2</div>
+            </div>
+            <div class="swiper-slide">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+                     alt="Author Image" class="author-img">
+                <div class="author-name">Author Name 2</div>
+            </div>
+            <div class="swiper-slide">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+                     alt="Author Image" class="author-img">
+                <div class="author-name">Author Name 2</div>
+            </div>
+            <div class="swiper-slide">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+                     alt="Author Image" class="author-img">
+                <div class="author-name">Author Name 2</div>
+            </div>
+            <div class="swiper-slide">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+                     alt="Author Image" class="author-img">
+                <div class="author-name">Author Name 2</div>
+            </div>
+            <div class="swiper-slide">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+                     alt="Author Image" class="author-img">
+                <div class="author-name">Author Name 2</div>
+            </div>
+            <div class="swiper-slide">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+                     alt="Author Image" class="author-img">
+                <div class="author-name">Author Name 2</div>
+            </div>
+            <!-- Add more authors dynamically later -->
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+
+
+
+    <?php include 'index_footer.php' ?>
+    
 
     <script>
         setTimeout(() => {
@@ -326,6 +630,22 @@ if (isset($_POST['add_to_cart'])) {
             // hides element (still takes up space on page)
             box.style.display = 'none';
         }, 2000);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper(".swiper", {
+            slidesPerView: 6,
+            spaceBetween: 20,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                1024: { slidesPerView: 6 },
+                768: { slidesPerView: 4 },
+                480: { slidesPerView: 2 }
+            }
+        });
     </script>
 
 
