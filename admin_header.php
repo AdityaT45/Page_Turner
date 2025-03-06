@@ -96,7 +96,7 @@
             <a href="admin_index.php">Home</a>
             <a href="add_books.php">Add Books</a>
             <a href="admin_orders.php">Orders</a>
-            <a href="message_admin.php">Messages</a>
+            <a href="admin_view_messages.php">Messages</a>
             <a href="users_detail.php">Users</a>
         </div>
 

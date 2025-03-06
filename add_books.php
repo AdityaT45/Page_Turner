@@ -11,17 +11,28 @@ if (isset($_POST['add_books'])) {
     $bname = mysqli_real_escape_string($conn, $_POST['bname']);
     $author = mysqli_real_escape_string($conn, $_POST['author']);
     $category = mysqli_real_escape_string($conn, $_POST['category']);
+    $language = mysqli_real_escape_string($conn, $_POST['language']);
+    $publisher = mysqli_real_escape_string($conn, $_POST['publisher']);
+    $binding = mysqli_real_escape_string($conn, $_POST['binding']);
+    $no_of_pages = $_POST['no_of_pages'];
+    $weight = $_POST['weight'];
+    $publisher_date = $_POST['publisher_date'];
+    $height = $_POST['height'];
+    $spine_width = $_POST['spine_width'];
+    $width = $_POST['width'];
     $price = $_POST['price'];
+    $description = mysqli_real_escape_string($conn, $_POST['description']);
+    $date = date('Y-m-d');
+    
     $img = $_FILES['image']['name'];
     $img_temp_name = $_FILES['image']['tmp_name'];
     $img_file = "./added_books/" . $img;
-    $description = $_POST['description'];
-
-    if (empty($bname) || empty($author) || empty($price) || empty($category) || empty($img) || empty($description)) {
+    
+    if (empty($bname) || empty($author) || empty($price) || empty($category) || empty($language) || empty($publisher) || empty($binding) || empty($no_of_pages) || empty($weight) || empty($publisher_date) || empty($height) || empty($spine_width) || empty($width) || empty($img) || empty($description)) {
         $message = 'All fields are required!';
     } else {
-        $add_book = mysqli_query($conn, "INSERT INTO book_info(name, author, price, category, image, description) VALUES('$bname','$author','$price','$category','$img','$description')") or die('Query failed');
-
+        $add_book = mysqli_query($conn, "INSERT INTO book_info(name, author, price, category, language, publisher, binding, no_of_pages, weight, publisher_date, height, spine_width, width, image, description, date) VALUES('$bname', '$author', '$price', '$category', '$language', '$publisher', '$binding', '$no_of_pages', '$weight', '$publisher_date', '$height', '$spine_width', '$width', '$img', '$description', '$date')") or die('Query failed');
+        
         if ($add_book) {
             move_uploaded_file($img_temp_name, $img_file);
             $message = 'New Book Added Successfully';
@@ -40,86 +51,18 @@ if (isset($_POST['add_books'])) {
     <title>Add Books - Page Turner</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #fdfce5;
-        }
-        .split-form {
-            display: flex;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            width: 100%;
-            max-width: 800px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        .image-side {
-            flex: 1;
-            background: #0f3859;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-            position: relative;
-        }
-        #lottie-animation {
-            width: 350px;
-            height: 350px;
-        }
-        .form-side {
-            flex: 1;
-            padding: 3rem;
-        }
-        .form-side h2 {
-            text-align: center;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-        input, select {
-            width: 100%;
-            padding: 1rem;
-            margin: 0.5rem 0;
-            border: none;
-            border-bottom: 2px solid #eee;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        input:focus, select:focus {
-            border-bottom-color: #0f3859;
-        }
-        button {
-            width: 100%;
-            padding: 1rem;
-            margin-top: 1.5rem;
-            background: #0f3859;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.3s;
-        }
-        button:hover {
-            transform: translateY(-2px);
-        }
-        .error-message {
-            text-align: center;
-            color: red;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { min-height: 100vh; display: flex; justify-content: center; align-items: center; background: #fdfce5; }
+        .split-form { display: flex; background: white; border-radius: 20px; overflow: hidden; width: 100%; max-width: 800px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .image-side { flex: 1; background: #0f3859; padding: 2rem; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; position: relative; }
+        #lottie-animation { width: 350px; height: 350px; }
+        .form-side { flex: 1; padding: 3rem; }
+        .form-side h2 { text-align: center; margin-bottom: 1rem; color: #333; }
+        input, select { width: 100%; padding: 1rem; margin: 0.5rem 0; border: none; border-bottom: 2px solid #eee; outline: none; transition: border-color 0.3s; }
+        input:focus, select:focus { border-bottom-color: #0f3859; }
+        button { width: 100%; padding: 1rem; margin-top: 1.5rem; background: #0f3859; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; transition: transform 0.3s; }
+        button:hover { transform: translateY(-2px); }
+        .error-message { text-align: center; color: red; font-weight: bold; margin-bottom: 1rem; }
     </style>
 </head>
 <body>
@@ -145,6 +88,15 @@ if (isset($_POST['add_books'])) {
                     <option value="Health">Health</option>
                     <option value="Novel">Novel</option>
                 </select>
+                <input type="text" name="language" placeholder="Enter Language" required>
+                <input type="text" name="publisher" placeholder="Enter Publisher" required>
+                <input type="text" name="binding" placeholder="Enter Binding Type" required>
+                <input type="number" name="no_of_pages" placeholder="Enter Number of Pages" required>
+                <input type="number" name="weight" placeholder="Enter Weight (grams)" required>
+                <input type="date" name="publisher_date" required>
+                <input type="number" name="height" placeholder="Enter Height" required>
+                <input type="number" name="spine_width" placeholder="Enter Spine Width" required>
+                <input type="number" name="width" placeholder="Enter Width" required>
                 <input type="file" name="image" required>
                 <input type="text" name="description" placeholder="Enter Book Description" required>
                 <button type="submit" name="add_books">Add Book</button>
@@ -152,13 +104,7 @@ if (isset($_POST['add_books'])) {
         </div>
     </div>
     <script>
-        lottie.loadAnimation({
-            container: document.getElementById('lottie-animation'),
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            path: 'images/Animation - 1741021320383.json' 
-        });
+        lottie.loadAnimation({ container: document.getElementById('lottie-animation'), renderer: 'svg', loop: true, autoplay: true, path: 'images/Animation - 1741021320383.json' });
     </script>
 </body>
 </html>

@@ -123,7 +123,7 @@ $result = mysqli_query($conn, "SELECT * FROM staff");
         }
     </style>
 </head>
-<body>
+<body  style="background-color:#fdfce5">
 <?php include 'admin_header.php'; ?>
 <h2>Manage Staff</h2>
 

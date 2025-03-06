@@ -118,7 +118,7 @@
 
                 </div>
             </div>
-            <a href="contact-us.php">Contact US</a>
+            <a href="submit_query.php">Contact US</a>
             <a href="cart.php">Cart</a>
             <a href="orders.php">Orders</a>
         </div>

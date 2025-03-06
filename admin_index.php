@@ -152,7 +152,7 @@ if ($fetch_staff = mysqli_fetch_assoc($select_staff)) {
                 <p class="card-text">
                     <?php echo $admin_count; ?>
                 </p>
-                <a href="users_detail.php" class="btn btn-primary">Details</a>
+                <a href="admin_detail.php" class="btn btn-primary">Details</a>
             </div>
         </div>
         <div class="card" style="width: 15rem">

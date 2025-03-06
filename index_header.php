@@ -183,7 +183,7 @@
                     <a href="update_user_info.php">update info</a>
                 </div>
             </div>
-            <a href="contact-us.php">Contact Us</a>
+            <a href="submit_query.php">Contact Us</a>
             <a href="cart.php">Cart</a>
             <a href="orders.php">Orders</a>
         </div>
