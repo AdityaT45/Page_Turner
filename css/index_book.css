@@ -85,14 +85,12 @@
 .details .col_box img {
   height: 420px;
 }
-.details .col_box {
-  padding: 80px;
-}
+
 .details .col_box img {
   padding: 0;
 }
 .details h3 {
-  margin: 20px 0;
+  /* margin: 20px 0; */
   font-size: 22px;
   font-weight: bold;
 }
@@ -127,3 +125,4 @@ input:focus {
   text-decoration: none;
 }
 /* details book */
+

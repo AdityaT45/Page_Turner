@@ -1,156 +1,252 @@
 <?php
-include 'config.php';
-
 session_start();
+include 'config.php'; // Database connection
 
-$admin_id = $_SESSION['admin_id'];
-
-if (isset($_GET['delete'])) {
-    $delete_id = $_GET['delete'];
-    mysqli_query($conn, "DELETE FROM book_info WHERE bid = '$delete_id'") or die('query failed');
-    header('location:total_books.php');
+if (!isset($_SESSION['admin_name'])) {
+    header("Location: admin_login.php");
+    exit();
 }
 
+// DELETE book
+// DELETE book
+if (isset($_GET['delete'])) {
+    $bid = intval($_GET['delete']); // Ensure ID is an integer
 
-if (isset($_POST['update_product'])) {
+    // Fetch book image before deleting
+    $query = "SELECT image FROM book_info WHERE bid=$bid";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
 
-    $update_p_id = $_POST['update_p_id'];
-    $update_name = $_POST['update_name'];
-    $update_author = $_POST['update_author'];
-    $update_price = $_POST['update_price'];
-    $update_category = $_POST['update_category'];
-
-    mysqli_query($conn, "UPDATE book_info SET name='$update_name', author='$update_author', price='$update_price', category='$update_category' WHERE bid='$update_p_id'") or die('query failed');
-
-    $update_image = $_FILES['update_image']['name'];
-    $update_image_tmp_name = $_FILES['update_image']['tmp_name'];
-    $update_image_size = $_FILES['update_image']['size'];
-    $update_folder = './added_books/' . $update_image;
-    $update_old_image = $_POST['update_old_image'];
-
-    if (!empty($update_image)) {
-        if ($update_image_size > 2000000) {
-            $message[] = 'image file size is too large';
-        } else {
-            mysqli_query($conn, "UPDATE book_info SET image = '$update_image' WHERE bid = '$update_p_id'") or die('query failed');
-            move_uploaded_file($update_image_tmp_name, $update_folder);
-            unlink('uploaded_img/' . $update_old_image);
+    if ($row && !empty($row['image'])) {
+        $imagePath = "added_books/" . $row['image']; // Corrected path
+        if (file_exists($imagePath)) {
+            unlink($imagePath); // Delete the image
         }
     }
 
-    header('location:total_books.php');
-
+    // Delete book from database
+    $deleteQuery = "DELETE FROM book_info WHERE bid=$bid";
+    if (mysqli_query($conn, $deleteQuery)) {
+        header("Location: manage_books.php");
+        exit();
+    } else {
+        echo "Error deleting book: " . mysqli_error($conn);
+    }
 }
 
+
+// UPDATE book
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_id'])) {
+    $bid = intval($_POST['update_id']);
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $author = mysqli_real_escape_string($conn, $_POST['author']);
+    $price = mysqli_real_escape_string($conn, $_POST['price']);
+    $category = mysqli_real_escape_string($conn, $_POST['category']);
+    $description = mysqli_real_escape_string($conn, $_POST['description']);
+
+    if (!empty($_FILES['image']['name'])) {
+        $imageName = time() . "_" . $_FILES['image']['name'];
+        move_uploaded_file($_FILES['image']['tmp_name'], "uploads/" . $imageName);
+        $sql = "UPDATE book_info SET name=?, author=?, price=?, category=?, description=?, image=? WHERE bid=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssisssi", $name, $author, $price, $category, $description, $imageName, $bid);
+    } else {
+        $sql = "UPDATE book_info SET name=?, author=?, price=?, category=?, description=? WHERE bid=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssissi", $name, $author, $price, $category, $description, $bid);
+    }
+    $stmt->execute();
+    header("Location: manage_books.php?msg=Book updated successfully");
+    exit();
+}
+
+// ADD book
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_book'])) {
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $author = mysqli_real_escape_string($conn, $_POST['author']);
+    $price = mysqli_real_escape_string($conn, $_POST['price']);
+    $category = mysqli_real_escape_string($conn, $_POST['category']);
+    $description = mysqli_real_escape_string($conn, $_POST['description']);
+
+    $imageName = "";
+    if (!empty($_FILES['image']['name'])) {
+        $imageName = time() . "_" . $_FILES['image']['name'];
+        move_uploaded_file($_FILES['image']['tmp_name'], "uploads/" . $imageName);
+    }
+
+    $sql = "INSERT INTO book_info (name, author, price, category, description, image) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssisss", $name, $author, $price, $category, $description, $imageName);
+    $stmt->execute();
+    header("Location: manage_books.php?msg=Book added successfully");
+    exit();
+}
+
+// FETCH books
+$result = mysqli_query($conn, "SELECT * FROM book_info");
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/register.css">
-    <!-- <author>Add Books</author> -->
-</head>
-
-<body style="background-color:lightgrey;">
-    <?php
-    include './admin_header.php'
-        ?>
-    <?php
-    if (isset($message)) {
-        foreach ($message as $message) {
-            echo '
-           <div class="message"><span>' . $message . '</span><i onclick="this.parentElement.remove();">Close</i>
-           </div>
-           ';
+    <title>Manage Books</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            text-align: center;
         }
+        h2 {
+            margin-top: 20px;
+        }
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #0f3859;
+            color: white;
+        }
+        td {
+            text-align: center;
+        }
+        .edit, .delete, .add {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .edit { background: #007bff; color: white; }
+        .delete { background: #dc3545; color: white; }
+        .add { background: #28a745; color: white; }
+        form {
+            background: white;
+            padding: 15px;
+            width: 50%;
+            margin: 20px auto;
+            border-radius: 10px;
+            display: none;
+        }
+        textarea {
+            width: 90%;
+            height: 60px;
+        }
+        img {
+            width: 100px;
+            height: auto;
+            border-radius: 5px;
+        }
+        #categoryFilter {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background: white;
+        cursor: pointer;
+        width: 200px; /* Increase width */
     }
-    ?>
-    <a class="update_btn" style="position: fixed ; z-index:100;" href="add_books.php">Add More Books</a>
 
-    <section class="edit-product-form">
-        <?php
-        if (isset($_GET['update'])) {
-            $update_id = $_GET['update'];
-            $update_query = mysqli_query($conn, "SELECT * FROM book_info WHERE bid = '$update_id'") or die('query failed');
-            if (mysqli_num_rows($update_query) > 0) {
-                while ($fetch_update = mysqli_fetch_assoc($update_query)) {
-                    ?>
-                    <form action="" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="update_p_id" value="<?php echo $fetch_update['bid']; ?>">
-                        <input type="hidden" name="update_old_image" value="<?php echo $fetch_update['image']; ?>">
-                        <img src="./added_books/<?php echo $fetch_update['image']; ?>" alt="">
-                        <input type="text" name="update_name" value="<?php echo $fetch_update['name']; ?>" class="box" required
-                            placeholder="Enter Book Name">
-                        <input type="text" name="update_author" value="<?php echo $fetch_update['author']; ?>" class="box" required
-                            placeholder="Enter Author Name">
-                        <select name="update_category" required class="box">
-                            <option value="" selected disabled>
-                                <?php echo $fetch_update['category']; ?>
-                            </option>
-                            <option value="None">None</option>
-                            <option value="Adventure">Adventure</option>
-                            <option value="Magical">Magical</option>
-                            <option value="Knowledge">Knowledge</option>
-                            <option value="Sci-Fi">Sci-Fi</option>
-                            <option value="Love">Love</option>
-                            <option value="Health">Health</option>
-                            <option value="Novel">Novel</option>
-                        </select>
-                        <input type="number" name="update_price" value="<?php echo $fetch_update['price']; ?>" min="0" class="box"
-                            required placeholder="enter product price">
-                        <input type="file" class="box" name="update_image">
-                        <input type="submit" value="update" name="update_product" class="delete_btn">
-                        <input type="reset" value="cancel" id="close-update" class="update_btn">
-                    </form>
-                    <?php
-                }
-            }
-        } else {
-            echo '<script>document.querySelector(".edit-product-form").style.display = "none";</script>';
-        }
-        ?>
+    label[for="categoryFilter"] {
+        font-size: 18px;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    </style>
+</head>
+<body style="background-color:#fdfce5">
+<?php include 'admin_header.php'; ?>
 
-    </section>
 
-    <section class="show-products">
-        <div class="box-container">
+<?php
+$categoryQuery = "SELECT DISTINCT category FROM book_info";
+$categoryResult = mysqli_query($conn, $categoryQuery);
+?>
+<h2>Manage Books</h2>
 
-            <?php
-            $select_book = mysqli_query($conn, "SELECT * FROM book_info ORDER BY date DESC") or die('query failed');
-            if (mysqli_num_rows($select_book) > 0) {
-                while ($fetch_book = mysqli_fetch_assoc($select_book)) {
-                    ?>
-                    <!-- <div class="box"> -->
-                    <div class="box" style="height:375px;">
-                        <img class="books_images" src="added_books/<?php echo $fetch_book['image']; ?>" alt="">
-                        <div class="name">Name :
-                            <?php echo $fetch_book['name']; ?>
-                        </div>
-                        <div class="name">Aurthor :
-                            <?php echo $fetch_book['author']; ?>
-                        </div>
-                        <div class="price">Price : ₹
-                            <?php echo $fetch_book['price']; ?>/-
-                        </div>
-                        <a href="total_books.php?update=<?php echo $fetch_book['bid']; ?>" class="update_btn">update</a>
-                        <a href="total_books.php?delete=<?php echo $fetch_book['bid']; ?>" class="delete_btn"
-                            onclick="return confirm('Delete this Product?');">delete</a><br>
-                    </div>
-                    <?php
-                }
+<label for="categoryFilter"><strong>Filter by Category:</strong></label>
+<select id="categoryFilter" onchange="filterBooks()">
+    <option value="all">All Categories</option>
+    <?php while ($categoryRow = mysqli_fetch_assoc($categoryResult)) { ?>
+        <option value="<?= $categoryRow['category']; ?>"><?= $categoryRow['category']; ?></option>
+    <?php } ?>
+</select>
+
+
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Author</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+        <tr>
+            <td><?= $row['bid']; ?></td>
+            <td>
+                <?php if (!empty($row['image'])) { ?>
+                    <img src="added_books/<?= $row['image']; ?>" alt="Book Image">
+                <?php } else { ?>
+                    No Image
+                <?php } ?>
+            </td>
+            <td><?= $row['name']; ?></td>
+            <td><?= $row['author']; ?></td>
+            <td><?= $row['price']; ?></td>
+            <td><?= $row['category']; ?></td>
+            <td><?= substr($row['description'], 0, 50) . '...'; ?></td>
+            <td>
+                <button class="edit" onclick="editBook(<?= $row['bid']; ?>, '<?= $row['name']; ?>', '<?= $row['author']; ?>', '<?= $row['price']; ?>', '<?= $row['category']; ?>', '<?= $row['description']; ?>')">Edit</button>
+                <a href="manage_books.php?delete=<?= $row['bid']; ?>" class="delete" onclick="return confirm('Are you sure?');">Delete</a>
+            </td>
+        </tr>
+    <?php } ?>
+</table>
+
+<button class="add" onclick="document.getElementById('addForm').style.display='block'">Add Book</button>
+
+<script>
+    function editBook(id, name, author, price, category, description) {
+        document.getElementById('editForm').style.display = 'block';
+        document.getElementById('update_id').value = id;
+        document.getElementById('edit_name').value = name;
+        document.getElementById('edit_author').value = author;
+        document.getElementById('edit_price').value = price;
+        document.getElementById('edit_category').value = category;
+        document.getElementById('edit_description').value = description;
+    }
+</script>
+<script>
+    function filterBooks() {
+        let selectedCategory = document.getElementById("categoryFilter").value.toLowerCase();
+        let rows = document.querySelectorAll("table tr:not(:first-child)");
+
+        rows.forEach(row => {
+            let category = row.cells[5].textContent.toLowerCase(); // Get category from 6th column
+            if (selectedCategory === "all" || category === selectedCategory) {
+                row.style.display = "";
             } else {
-                echo '<p class="empty">no products added yet!</p>';
+                row.style.display = "none";
             }
-            ?>
-        </div>
+        });
+    }
+</script>
 
-    </section>
 
-    <script src="./js/admin.js"></script>
 </body>
-
 </html>

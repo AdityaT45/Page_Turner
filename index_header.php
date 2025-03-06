@@ -166,8 +166,8 @@
 
 <body>
     <header>
-        <div class="logo">
-            <a href="index.php"><span class="text-warning">Page</span> <span class="me text-light">Turner</span></a>
+    <div class="logo">
+            <a href="admin_index.php"><span class="text-warning">Page</span> <span class="me text-light">Turner</span></a>
         </div>
 
         <div class="nav">
@@ -180,6 +180,7 @@
                     <a href="index.php#Magical">Magical</a>
                     <a href="index.php#Knowledge">Knowledge</a>
                     <a href="all_books.php">All Books</a>
+                    <a href="update_user_info.php">update info</a>
                 </div>
             </div>
             <a href="contact-us.php">Contact Us</a>
@@ -193,13 +194,13 @@
             </a>
 
             <?php
-            session_start();
-            if (isset($_SESSION['user_name'])) {
-                echo '<div class="user-name" onclick="toggleMenu()">' . $_SESSION['user_name'] . '</div>';
-            } else {
-                echo '<img src="images/user.png" class="user-avatar" onclick="redirectToLogin()" />';
-            }
-            ?>
+
+    if (isset($_SESSION['user_name'])) {
+        echo '<div class="user-name" onclick="toggleMenu()">' . $_SESSION['user_name'] . '</div>';
+    } else {
+        echo '<img src="images/user.png" class="user-avatar" onclick="redirectToLogin()" />';
+    }
+    ?>
         </div>
     </header>
 

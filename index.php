@@ -1,4 +1,8 @@
 <?php
+session_start(); // Start session to access session variables
+?>
+
+<?php
 include 'config.php';
 
 error_reporting(0);
@@ -288,9 +292,31 @@ if (isset($_POST['add_to_cart'])) {
         <span class="visually-hidden">Next</span>
     </button>
 </div>
+<?php
+
+
+if (isset($_SESSION['user_name'])) {
+    echo '<div>
+             <h2 class="m-8 font-extrabold text-4xl text-center bg-light p-1" style="color:#0f3859;">
+                 Welcome ' . $_SESSION['user_name'] . ', start your book shopping!
+             </h2>
+             <i class="fas fa-times" onclick="this.parentElement.style.display=\'none\'"></i>
+          </div>';
+} else {
+    echo '<div>
+             <h2 class=" m-8 font-extrabold text-4xl text-center bg-red-600 text-white p-2">
+                 Please log in to start shopping.
+             </h2>
+          </div>';
+}
+?>
 
 <!-- ✅ Empty Banner Box -->
 <div class="banner"></div>
+
+<!-- Welcome Message Section -->
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -316,7 +342,7 @@ if (isset($_POST['add_to_cart'])) {
 
     <section id="New">
         <div class="container-fluid mx-auto  ">
-            <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
+            <h2 class="m-8 font-extrabold text-4xl text-center bg-light p-1" style="color:#0f3859;">
             
             New Arrived
             </h2>
@@ -325,31 +351,33 @@ if (isset($_POST['add_to_cart'])) {
     <section class="carousel-container ">
         <div class="swiper ">
             <div class="swiper-wrapper">
-                <?php
-                $select_book = mysqli_query($conn, "SELECT * FROM `book_info` ORDER BY date DESC LIMIT 12") or die('Query failed');
-                if (mysqli_num_rows($select_book) > 0) {
-                    while ($fetch_book = mysqli_fetch_assoc($select_book)) {
-                        $discount = rand(10, 30); // Random discount percentage
-                        $discounted_price = $fetch_book['price'] - ($fetch_book['price'] * ($discount / 100));
-                ?>
-                        <div class="swiper-slide">
-    <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
-    <a href="login.php?details=<?php echo $fetch_book['bid']; ?>">
-        <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
-    </a>
-    <div class="book-name"><?php echo $fetch_book['name']; ?></div>
-    <div class="author">by <?php echo $fetch_book['author']; ?></div>
-    <div class="stars">⭐⭐⭐⭐⭐</div>
-    <div class="price">₹<?php echo number_format($discounted_price, 2); ?>
-        <span class="old-price">₹<?php echo number_format($fetch_book['price'], 2); ?></span>
-    </div>
-</div>
-                <?php
-                    }
-                } else {
-                    echo '<p class="empty">No Books Available!</p>';
-                }
-                ?>
+            <?php
+session_start(); // Start the session
+
+$select_book = mysqli_query($conn, "SELECT * FROM `book_info` ORDER BY date DESC LIMIT 12") or die('Query failed');
+if (mysqli_num_rows($select_book) > 0) {
+    while ($fetch_book = mysqli_fetch_assoc($select_book)) {
+        $discount = rand(10, 30);
+        $discounted_price = $fetch_book['price'] - ($fetch_book['price'] * ($discount / 100));
+?>
+        <div class="swiper-slide">
+            <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
+            <a href="<?php echo isset($_SESSION['user_id']) ? 'book_details.php?details=' . $fetch_book['bid'] : 'login.php'; ?>">
+                <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
+            </a>
+            <div class="book-name"><?php echo $fetch_book['name']; ?></div>
+            <div class="author">by <?php echo $fetch_book['author']; ?></div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <div class="price">₹<?php echo number_format($discounted_price, 2); ?>
+                <span class="old-price">₹<?php echo number_format($fetch_book['price'], 2); ?></span>
+            </div>
+        </div>
+<?php
+    }
+} else {
+    echo '<p class="empty">No Books Available!</p>';
+}
+?>
             </div>
 
             <!-- Navigation Buttons -->
