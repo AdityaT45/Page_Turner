@@ -381,10 +381,10 @@ $order_id = $order['id'];
    <!-- Razorpay Payment Script -->
    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-<script>
-    var options = {
+   <script>
+    options = {
         "key": "rzp_test_wcit1OfpfPhyX8", // Replace with your Razorpay Key ID
-        "amount": "<?php echo $grand_total * 100; ?>", 
+        "amount": "49900", 
         "currency": "INR",
         "name": "Your Company Name",
         "description": "Order Payment",
@@ -395,9 +395,11 @@ $order_id = $order['id'];
             window.location.href = "payment_success.php?payment_id=" + response.razorpay_payment_id;
         },
         "prefill": {
-            "name": "<?php echo $user['name']; ?>",
-            "email": "<?php echo $user['email']; ?>",
-            "contact": "<?php echo $user['number']; ?>"
+            "name": "Shubham",
+            "email": "shubham@gmail.com",
+            "contact": "<br />",
+// <b>Warning</b>:  Undefined array key "number" in <b>C:\xampp\htdocs\Page_Turner\checkout.php</b> on line <b>400</b><br />
+// "
         },
         "theme": {
             "color": "#3399cc"
@@ -407,9 +409,12 @@ $order_id = $order['id'];
     var rzp = new Razorpay(options);
     
     document.getElementById('rzp-button1').onclick = function (e) {
-        rzp.open();
-        e.preventDefault();
-    };
+    // debugger
+    console.log("Button clicked"); // Check if this shows in the console
+    rzp.open();
+    e.preventDefault();
+};
+
 </script>
 
 
