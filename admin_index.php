@@ -53,13 +53,39 @@ if ($fetch_staff = mysqli_fetch_assoc($select_staff)) {
 <div class="card" style="width: 15rem">
     <img class="card-img-top" src="./images/pen3.png" alt="Card image cap" />
     <div class="card-body">
-        <h5 class="card-title">Total Staff Members</h5>
+        <h5 class="card-title">Manage Staff Members</h5>
         <p class="card-text" style="font-size: 20px; font-weight: bold; color: #007bff;">
             <?php echo $staff_count; ?>
         </p>
-        <div class="buttons" style="display: flex; gap: 5px;">
-            <a href="staff_register.php" class="btn btn-danger">Add Staff</a>
+        <div class="buttons" style="display: flex; gap: 2px;">
+            <a href="staff_register.php" class="btn btn-primary">Add Staff</a>
             <a href="manage_staff.php" class="btn btn-primary">Manage Staff</a>
+        </div>
+    </div>
+</div>
+
+
+
+<?php
+include 'config.php'; // Database connection
+
+$delivery_staff_count = 0;
+$select_delivery_staff = mysqli_query($conn, "SELECT COUNT(*) AS total FROM delivery_staff") or die('Query failed');
+if ($fetch_delivery_staff = mysqli_fetch_assoc($select_delivery_staff)) {
+    $delivery_staff_count = $fetch_delivery_staff['total'];
+}
+?>
+
+<div class="card" style="width: 15rem">
+    <img class="card-img-top" src="./images/pen3.png" alt="Card image cap" />
+    <div class="card-body">
+        <h5 class="card-title">Manage delivery staff</h5>
+        <p class="card-text" style="font-size: 20px; font-weight: bold; color: #007bff;">
+        <?php echo $delivery_staff_count; ?>
+        </p>
+        <div class="buttons" style="display: flex; gap: 2px;">
+            <a href="delivery_staff_register.php" class="btn btn-primary">Add Staff</a>
+            <a href="manage_delivery_staff.php" class="btn btn-primary">Manage Staff</a>
         </div>
     </div>
 </div>

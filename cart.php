@@ -42,6 +42,12 @@ if (isset($_GET['remove'])) {
             padding: 8px;
             
         }
+        .addBook-btn {
+            background-color:rgb(0, 158, 66);
+            color: black;
+            padding: 8px;
+            
+        }
     </style>
 </head>
 <body style="background-color:#fdfce5">
@@ -51,7 +57,7 @@ if (isset($_GET['remove'])) {
             echo '<div class="message" id="alert-message">'.$_SESSION['message'].'</div>'; 
             unset($_SESSION['message']);
         } ?>
-        <table class="cart-table">
+        <table class="cart-table mb-5">
             <thead>
                 <tr>
                     <th>Image</th>
@@ -97,7 +103,11 @@ if (isset($_GET['remove'])) {
                 </tr>
             </tfoot>
         </table>
-        <a href="checkout.php" class="checkout-btn btn mt-5 px-5">Proceed to Checkout</a>
+        <div style="margin-top: 20px;">
+        <a href="checkout.php" class="checkout-btn btn mt-5 py-5">Proceed to Checkout</a>
+        <a href="index.php" class="addBook-btn btn mt-5 px-5">Add More Book </a>
+        </div>
+        
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {

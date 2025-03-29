@@ -7,6 +7,7 @@ $user_id = $_SESSION['user_id'];
 
 if (!isset($user_id)) {
    header('location:login.php');
+   exit();
 }
 
 ?>
@@ -18,149 +19,96 @@ if (!isset($user_id)) {
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Orders</title>
-
-   <!-- font awesome cdn link  -->
+   <title>My Orders</title>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-   <link rel="stylesheet" href="./css/hello.css">
-
    <style>
-      .placed-orders .title {
+      body {
+         font-family: Arial, sans-serif;
+         background: #fdfce5;
          text-align: center;
-         margin-bottom: 20px;
-         text-transform: uppercase;
-         color: black;
-         font-size: 40px;
       }
-
-      .placed-orders .box-container {
-         max-width: 1200px;
-         margin: 0 auto;
-         display: flex;
-         flex-wrap: wrap;
-         align-items: center;
-         gap: 20px;
+      h1 {
+         margin-top: 20px;
       }
-
-      .placed-orders .box-container .empty {
-         flex: 1;
-      }
-
-      .placed-orders .box-container .box {
-         flex: 1 1 400px;
-         border-radius: .5rem;
-         padding: 15px;
-         border: 2px solid brown;
-         background-color: white;
-         padding: 10px 20px;
-      }
-
-      .placed-orders .box-container .box p {
-         padding: 10px 0 0 0;
-         font-size: 20px;
-         color: gray;
-      }
-
-      .placed-orders .box-container .box p span {
-         color: black;
-      }
-
-      hr {
-         margin: auto;
+      .table-container {
          width: 80%;
-         height: 8px;
-         border: 2px;
+         margin: 20px auto;
+         overflow-x: auto;
       }
-
-      #print_btn {
+      table {
+         width: 100%;
+         border-collapse: collapse;
+         background: white;
+         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      th, td {
+         padding: 10px;
+         border: 1px solid #ddd;
+         text-align: center;
+      }
+      th {
+         background: #0f3859;
+         color: white;
+      }
+      .track-btn {
          background-color: dimgray;
          padding: 8px 12px;
-         margin: 7px;
          border-radius: 10px;
          color: white;
          text-transform: uppercase;
+         cursor: pointer;
+         text-decoration: none;
+      }
+      .track-btn:hover {
+         background-color: #333;
       }
    </style>
-
 </head>
 
 <body>
-
    <?php include 'index_header.php'; ?>
-   <section class="placed-orders">
+   <h1>My Orders</h1>
+   <div class="table-container">
+      <table>
+         <thead>
+            <tr>
+               <th>Order Date</th>
+               <th>Order ID</th>
+               <th>Books Ordered</th>
+               <th>Total Price</th>
+               <th>Payment Status</th>
+               <th>Track My Order</th>
+            </tr>
+         </thead>
+         <tbody>
+            <?php
+            $query = "SELECT order_date, id AS order_id, total_books, total_price, payment_status FROM confirm_order WHERE user_id = '$user_id' ORDER BY order_date DESC";
+            $result = mysqli_query($conn, $query) or die('Query failed');
 
-      <h1 class="title">placed orders</h1>
-
-      <div class="box-container">
-
-         <?php
-         $select_book = mysqli_query($conn, "SELECT * FROM `confirm_order`WHERE user_id = '$user_id' ORDER BY order_date DESC") or die('query failed');
-         if (mysqli_num_rows($select_book) > 0) {
-            while ($fetch_book = mysqli_fetch_assoc($select_book)) {
-               ?>
-               <!-- <div class="box"> -->
-               <div class="box" style="width: 255px; height:auto;">
-                  <p> Order Date : <span>
-                        <?php echo $fetch_book['order_date']; ?>
-                     </span> </p>
-                  <p> Order Id : <span>#
-                        <?php echo $fetch_book['order_id']; ?>
-                  </p>
-                  <p> Name : <span>
-                        <?php echo $fetch_book['name']; ?>
-                     </span> </p>
-                  <p> Mobile Number : <span>
-                        <?php echo $fetch_book['number']; ?>
-                     </span> </p>
-                  <p> Email Id : <span>
-                        <?php echo $fetch_book['email']; ?>
-                     </span> </p>
-                  <p> Address : <span>
-                        <?php echo $fetch_book['address']; ?>
-                     </span> </p>
-                  <p> Payment Method : <span>
-                        <?php echo $fetch_book['payment_method']; ?>
-                     </span> </p>
-                  <p> Your orders : <span>
-                        <?php echo $fetch_book['total_books']; ?>
-                     </span> </p>
-                  <p> Total price : <span>₹
-                        <?php echo $fetch_book['total_price']; ?>/-
-                     </span> </p>
-                  <p> Payment status : <span style="color:<?php if ($fetch_book['payment_status'] == 'pending') {
-                     echo 'orange';
-                  } else {
-                     echo 'green';
-                  } ?>;">
-                        <?php echo $fetch_book['payment_status']; ?>
-                     </span> </p>
-                  <hr>
-                  <hr>
-                  <p style="text-align:center;">
-                     <a id="print_btn" href="invoice.php?order_id=<?php echo $fetch_book['order_id']; ?>"
-                        target="_blank">Print Recipt</a>
-                  </p>
-               </div>
-               <!-- <form action="" method="POST">
-         <input type="hidden" name="order_id" value="<?php echo $fetch_book['order_id']; ?>">
-         </form> -->
-               <?php
+            if (mysqli_num_rows($result) > 0) {
+               while ($order = mysqli_fetch_assoc($result)) {
+            ?>
+            <tr>
+               <td><?php echo $order['order_date']; ?></td>
+               <td>#<?php echo $order['order_id']; ?></td>
+               <td><?php echo $order['total_books']; ?></td>
+               <td>₹<?php echo $order['total_price']; ?>/-</td>
+               <td style="color:<?php echo ($order['payment_status'] == 'pending') ? 'orange' : 'green'; ?>;">
+                  <?php echo $order['payment_status']; ?>
+               </td>
+               <td>
+                  <a class="track-btn" href="track_order.php?order_id=<?php echo $order['order_id']; ?>">Track</a>
+               </td>
+            </tr>
+            <?php
+               }
+            } else {
+               echo '<tr><td colspan="6">No orders found!</td></tr>';
             }
-         } else {
-            echo '<p class="empty">You have not placed any order yet!!!!</p>';
-         }
-         ?>
-      </div>
-      <div>
-         <br><br>
-      </div>
-
-   </section>
-
-   <!-- <php include 'index_footer.php'; ?> -->
-   <!-- custom js file link  -->
-   <script src="js/script.js"></script>
-
+            ?>
+         </tbody>
+      </table>
+   </div>
 </body>
 
 </html>

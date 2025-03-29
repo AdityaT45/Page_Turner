@@ -24,9 +24,14 @@ if (isset($_POST['add_to_cart'])) {
             $conn->query("INSERT INTO cart (`book_id`,`user_id`,`name`, `price`, `image`, `quantity`, `total`) 
             VALUES('$book_id','$user_id','$book_name','$book_price','$book_image','$book_quantity', '$total_price')") or die('Add to cart Query failed');
             $message[] = 'Book Added To Cart Successfully';
+            
+            // Redirect to cart.php after successful addition
+            header("Location: cart.php");
+            exit;
         }
     }
 }
+
 ?>
 
 <!DOCTYPE html>

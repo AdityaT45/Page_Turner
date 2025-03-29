@@ -7,14 +7,14 @@ if (!isset($_SESSION['admin_name'])) {
     exit();
 }
 
-// DELETE staff
+// DELETE delivery staff
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
-    mysqli_query($conn, "DELETE FROM staff WHERE id=$id");
-    header("Location: manage_staff.php");
+    mysqli_query($conn, "DELETE FROM delivery_staff WHERE id=$id");
+    header("Location: manage_delivery_staff.php");
 }
 
-// UPDATE staff
+// UPDATE delivery staff
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_id'])) {
     $id = $_POST['update_id'];
     $name = mysqli_real_escape_string($conn, $_POST['name']);
@@ -22,28 +22,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_id'])) {
 
     if (!empty($_POST['password'])) {
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-        $sql = "UPDATE staff SET name='$name', email='$email', password='$password' WHERE id=$id";
+        $sql = "UPDATE delivery_staff SET name='$name', email='$email', password='$password' WHERE id=$id";
     } else {
-        $sql = "UPDATE staff SET name='$name', email='$email' WHERE id=$id";
+        $sql = "UPDATE delivery_staff SET name='$name', email='$email' WHERE id=$id";
     }
 
     mysqli_query($conn, $sql);
-    header("Location: manage_staff.php");
+    header("Location: manage_delivery_staff.php");
 }
 
-// ADD staff
+// ADD delivery staff
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_staff'])) {
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-    $sql = "INSERT INTO staff (name, email, password) VALUES ('$name', '$email', '$password')";
+    $sql = "INSERT INTO delivery_staff (name, email, password) VALUES ('$name', '$email', '$password')";
     mysqli_query($conn, $sql);
-    header("Location: manage_staff.php");
+    header("Location: manage_delivery_staff.php");
 }
 
-// FETCH staff members
-$result = mysqli_query($conn, "SELECT * FROM staff");
+// FETCH delivery staff members
+$result = mysqli_query($conn, "SELECT * FROM delivery_staff");
 ?>
 
 <!DOCTYPE html>
@@ -51,15 +51,15 @@ $result = mysqli_query($conn, "SELECT * FROM staff");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Staff</title>
+    <title>Manage Delivery Staff</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body style="background-color:#fdfce5">
 <?php include 'admin_header.php'; ?>
 
 <div class="container mt-4">
-    <h2 class="text-center">Manage Staff</h2>
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addStaffModal">Add Staff</button>
+    <h2 class="text-center">Manage Delivery Staff</h2>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addStaffModal">Add Delivery Staff</button>
 
     <table class="table table-bordered table-striped text-center">
         <thead class="table-dark">
@@ -82,7 +82,7 @@ $result = mysqli_query($conn, "SELECT * FROM staff");
                         <button class="btn btn-primary" 
                             onclick="editStaff(<?= $row['id']; ?>, '<?= $row['name']; ?>', '<?= $row['email']; ?>')" 
                             data-bs-toggle="modal" data-bs-target="#editStaffModal">Edit</button>
-                        <a href="manage_staff.php?delete=<?= $row['id']; ?>" class="btn btn-danger" 
+                        <a href="manage_delivery_staff.php?delete=<?= $row['id']; ?>" class="btn btn-danger" 
                            onclick="return confirm('Are you sure?');">Delete</a>
                     </td>
                 </tr>
@@ -96,7 +96,7 @@ $result = mysqli_query($conn, "SELECT * FROM staff");
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addStaffLabel">Add Staff</h5>
+                <h5 class="modal-title" id="addStaffLabel">Add Delivery Staff</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -111,7 +111,7 @@ $result = mysqli_query($conn, "SELECT * FROM staff");
                     <div class="mb-3">
                         <input type="password" class="form-control" name="password" placeholder="Password" required>
                     </div>
-                    <button type="submit" class="btn btn-success w-100">Add Staff</button>
+                    <button type="submit" class="btn btn-success w-100">Add Delivery Staff</button>
                 </form>
             </div>
         </div>
@@ -123,7 +123,7 @@ $result = mysqli_query($conn, "SELECT * FROM staff");
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editStaffLabel">Edit Staff</h5>
+                <h5 class="modal-title" id="editStaffLabel">Edit Delivery Staff</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -139,7 +139,7 @@ $result = mysqli_query($conn, "SELECT * FROM staff");
                         <input type="password" class="form-control" name="password" id="edit_password" 
                                placeholder="New Password (Leave blank if unchanged)">
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Update Staff</button>
+                    <button type="submit" class="btn btn-primary w-100">Update Delivery Staff</button>
                 </form>
             </div>
         </div>
