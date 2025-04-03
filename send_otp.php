@@ -12,17 +12,24 @@ if (isset($_POST['send_otp'])) {
     // Generate 6-digit OTP
     $otp = rand(100000, 999999);
 
-    // Store OTP in database
-    $conn->query("INSERT INTO otp_verification (email, otp) VALUES ('$email', '$otp')");
+    // First, delete any existing OTP for this email (prevents duplicate entries)
+    $conn->query("DELETE FROM otp_verification WHERE email='$email'");
+
+    // Insert OTP into the database
+    $insert = $conn->query("INSERT INTO otp_verification (email, otp, created_at) VALUES ('$email', '$otp', NOW())");
+
+    if (!$insert) {
+        die("Error inserting OTP: " . $conn->error);
+    }
 
     // Send email using PHPMailer
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com'; // Use your SMTP server
+        $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'gandhibapu009@gmail.com'; // Replace with your email
-        $mail->Password = 'bskv bfps vtuk zlhz'; // Replace with your email password
+        $mail->Username = 'gandhibapu009@gmail.com'; // Use your email
+        $mail->Password = 'bskv bfps vtuk zlhz'; // Use App Password instead
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
@@ -33,12 +40,13 @@ if (isset($_POST['send_otp'])) {
         $mail->Subject = 'Your OTP Code';
         $mail->Body = "<h3>Your OTP Code is: <b>$otp</b></h3>";
 
-        $mail->send();
-        echo 'OTP sent successfully!';
+        if ($mail->send()) {
+            echo "OTP sent successfully!";
+        } else {
+            echo "Error sending OTP: " . $mail->ErrorInfo;
+        }
     } catch (Exception $e) {
-        echo "Error: {$mail->ErrorInfo}";
+        echo "Error sending OTP: {$mail->ErrorInfo}";
     }
 }
 ?>
-
-

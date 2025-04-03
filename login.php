@@ -22,7 +22,7 @@ if (isset($_POST['login'])) {
             $_SESSION['admin_name'] = $row['name'];
             $_SESSION['admin_email'] = $row['email'];
             $_SESSION['admin_id'] = $row['Id'];
-            header('location:admin_index.php');
+            header('location:admin_dashboard.php');
         } elseif ($row['user_type'] == 'User') {
             $_SESSION['user_name'] = $row['name'];
             $_SESSION['user_email'] = $row['email'];
@@ -228,6 +228,8 @@ button:hover {
             <p style="text-align: center; margin-top: 1rem;">
                 Don't have an account? <a class="link" href="register.php">Register</a>
             </p>
+
+            <a class="link" href="ds_login.php">ds login</a>
         </div>
     </div>
 

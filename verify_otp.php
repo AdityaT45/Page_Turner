@@ -1,18 +1,27 @@
 <?php
 session_start();
-include 'config.php';
 
+// Check if OTP is submitted for verification
 if (isset($_POST['verify_otp'])) {
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $otp = mysqli_real_escape_string($conn, $_POST['otp']);
+    // Check if email and OTP are provided
+    if (empty($_POST['email']) || empty($_POST['otp'])) {
+        $_SESSION['message'] = "Email and OTP are required!";
+        header("Location: register.php");
+        exit();
+    }
 
-    $check_otp = $conn->query("SELECT * FROM otp_verification WHERE email='$email' AND otp='$otp' ORDER BY created_at DESC LIMIT 1");
+    $email = $_POST['email'];
+    $otp = $_POST['otp'];
 
-    if (mysqli_num_rows($check_otp) > 0) {
-        echo 'OTP Verified! Proceeding to Registration...';
-        // You can redirect or proceed with user registration
+    // Validate OTP
+    if ($otp == $_SESSION['otp']) {
+        $_SESSION['message'] = "OTP Verified Successfully!";
+        // Redirect to next registration step (e.g., store the user, show next form, etc.)
+        header("Location: register_success.php");
+        exit();
     } else {
-        echo 'Invalid OTP! Please try again.';
+        $_SESSION['message'] = "Invalid OTP! Please try again.";
+        header("Location: register.php");
+        exit();
     }
 }
-?>

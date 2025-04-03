@@ -12,7 +12,7 @@ if (!isset($_SESSION['admin_name'])) {
 if (isset($_GET['order_id'])) {
     $order_id = $_GET['order_id'];
 
-    // Fetch order details
+    // Fetch order details including district and taluka
     $order_query = mysqli_query($conn, "SELECT * FROM confirm_order WHERE id = $order_id");
     $order = mysqli_fetch_assoc($order_query);
 
@@ -20,19 +20,18 @@ if (isset($_GET['order_id'])) {
         die("Order not found.");
     }
 
-    $order_address = $order['address']; // Example: "Pune, Maharashtra"
-    $order_dist = "";
-    $order_tal = "";
+    // Get values from database
+    $order_address = $order['address'];
+    $order_dist = trim($order['district']); 
+    $order_tal = trim($order['taluka']); 
 
-    // Extract District and Taluka from the address
-    $address_parts = explode(",", $order_address);
-    if (count($address_parts) >= 2) {
-        $order_dist = trim($address_parts[0]); // First part = District
-        $order_tal = trim($address_parts[1]); // Second part = Taluka
-    }
-
-    // Fetch Delivery Staff matching the District & Taluka
-    $staff_query = mysqli_query($conn, "SELECT * FROM delivery_staff WHERE district = '$order_dist' AND taluka = '$order_tal' AND status = 'Active'");
+    // Fetch delivery staff who serve the selected taluka (single or multiple talukas)
+    $staff_query = mysqli_query($conn, "
+        SELECT * FROM delivery_staff 
+        WHERE district = '$order_dist' 
+        AND (taluka = '$order_tal' OR taluka LIKE '%,$order_tal,%' OR taluka LIKE '$order_tal,%' OR taluka LIKE '%,$order_tal' OR taluka LIKE '%$order_tal%')
+        AND status = 'Active'
+    ");
 }
 ?>
 

@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,24 +34,35 @@
         </div>
         <div class="form-side">
             <h1>Sign Up</h1>
-            <?php if (isset($message)) { echo "<p class='error-message'>$message</p>"; } ?>
+            
+            <!-- Show error message if any -->
+            <?php if (isset($_SESSION['message'])) { echo "<p class='error-message'>{$_SESSION['message']}</p>"; unset($_SESSION['message']); } ?>
+
+            <!-- Send OTP Form -->
             <form action="send_otp.php" method="post">
-                <input type="text" name="Name" placeholder="First Name" required>
-                <input type="text" name="Sname" placeholder="Surname" required>
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="Name" placeholder="First Name" required value="<?php echo isset($_SESSION['form_data']['Name']) ? $_SESSION['form_data']['Name'] : ''; ?>">
+                <input type="text" name="Sname" placeholder="Surname" required value="<?php echo isset($_SESSION['form_data']['Sname']) ? $_SESSION['form_data']['Sname'] : ''; ?>">
+                <input type="text" name="username" placeholder="Username" required value="<?php echo isset($_SESSION['form_data']['username']) ? $_SESSION['form_data']['username'] : ''; ?>">
+                
+                <input type="email" id="email-input" name="email" placeholder="Email" required value="<?php echo isset($_SESSION['form_data']['email']) ? $_SESSION['form_data']['email'] : ''; ?>">
+
                 <input type="password" name="password" placeholder="Password" required minlength="6" maxlength="8">
                 <input type="password" name="cpassword" placeholder="Confirm Password" required minlength="6" maxlength="8">
                 <button type="submit" name="send_otp">Send OTP</button>
             </form>
+
+            <!-- OTP Verification Form -->
             <form action="verify_otp.php" method="post">
-                <input type="hidden" name="email" id="otp-email">
+                <!-- Use session email value to auto-fill the hidden field -->
+                <input type="hidden" name="email" value="<?php echo isset($_SESSION['form_data']['email']) ? $_SESSION['form_data']['email'] : ''; ?>"> 
                 <input type="text" name="otp" placeholder="Enter OTP" required>
                 <button type="submit" name="verify_otp">Verify OTP</button>
             </form>
-            <a class="link" href="login.php" id="login-link">Already have an account? Login</a>
+
+            <a class="link" href="login.php">Already have an account? Login</a>
         </div>
     </div>
+
     <script>
         lottie.loadAnimation({
             container: document.getElementById('lottie-animation'),
@@ -56,6 +71,22 @@
             autoplay: true,
             path: 'images/Animation - 1741021320383.json'
         });
+
+        // Auto-fill email for OTP verification
+        document.addEventListener("DOMContentLoaded", function() {
+    const emailInput = document.getElementById("email-input");
+    const otpEmailInput = document.getElementById("otp-email");
+
+    // Ensure the otp-email input exists before setting the value
+    if (otpEmailInput && emailInput) {
+        emailInput.addEventListener("input", function() {
+            otpEmailInput.value = emailInput.value;
+        });
+
+        otpEmailInput.value = emailInput.value; // Auto-fill on page load
+    }
+});
+
     </script>
 </body>
 </html>

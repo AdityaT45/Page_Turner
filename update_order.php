@@ -14,17 +14,25 @@ if (!isset($_POST['razorpay_payment_id'])) {
 }
 
 $payment_id = $_POST['razorpay_payment_id'];
-$payment_status = "success"; // Assuming success, modify based on actual Razorpay response
+$payment_status = "success"; // Assuming success
 
 // Fetch User Details
 $query = "SELECT * FROM users_info WHERE Id = '$user_id'";
 $result = $conn->query($query);
+
+if (!$result || mysqli_num_rows($result) == 0) {
+    die("User details not found");
+}
+
 $user = mysqli_fetch_assoc($result);
 
+// Verify column names exist in database
 $full_name = $user['name'] . ' ' . $user['surname'];
 $email = $user['email'];
-$number = $user['mobile'];
-$address = $user['address'];
+$number = $user['mobile'] ?? ''; // Prevents "Undefined array key" error
+$address = $user['address'] ?? '';
+$district = $user['district'] ?? '';
+$taluka = $user['taluka'] ?? '';
 
 $grand_total = 0;
 $cart_items = [];
@@ -42,8 +50,8 @@ $total_books = implode(", ", $cart_items);
 $order_date = date('Y-m-d');
 
 // Insert Order into Database
-$insert_order = "INSERT INTO confirm_order (user_id, name, number, email, address, total_books, total_price, order_date, payment_id, payment_status) 
-VALUES ('$user_id', '$full_name', '$number', '$email', '$address', '$total_books', '$grand_total', '$order_date', '$payment_id', '$payment_status')";
+$insert_order = "INSERT INTO confirm_order (user_id, name, number, email, address, district, taluka, total_books, total_price, order_date, payment_id, payment_status) 
+VALUES ('$user_id', '$full_name', '$number', '$email', '$address', '$district', '$taluka', '$total_books', '$grand_total', '$order_date', '$payment_id', '$payment_status')";
 
 if ($conn->query($insert_order)) {
     // Clear cart after successful order
@@ -51,6 +59,6 @@ if ($conn->query($insert_order)) {
 
     echo "success"; // Sent to frontend
 } else {
-    echo "Error: " . $conn->error;
+    echo "Error saving order: " . $conn->error;
 }
 ?>

@@ -1,29 +1,39 @@
 <?php
 session_start();
-include 'config.php'; // Database connection
+include 'config.php'; // Include database connection
 
-// Check if the admin is logged in
-if (!isset($_SESSION['admin_name'])) {
-    header("Location: admin_login.php");
-    exit();
-}
-
-$message = "";
-
-// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = mysqli_real_escape_string($conn, $_POST['name']);
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $district = $_POST['district'];
+    $taluka = implode(", ", $_POST['taluka']); // Convert selected talukas to comma-separated string
 
-    $sql = "INSERT INTO delivery_staff (name, email, password) VALUES ('$name', '$email', '$password')";
-    if (mysqli_query($conn, $sql)) {
-        header("Location: manage_delivery_staff.php");
-        exit();
+    $sql = "INSERT INTO delivery_staff (name, email, phone, password, district, taluka) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssssss", $name, $email, $phone, $password, $district, $taluka);
+
+    if ($stmt->execute()) {
+        echo "Registration successful!";
     } else {
-        $message = "❌ Error: " . mysqli_error($conn);
+        echo "Error: " . $stmt->error;
     }
+
+    $stmt->close();
+    $conn->close();
 }
+
+$maharashtraData = [
+    "Ahmednagar" => ["Akole", "Jamkhed", "Karjat", "Kopargaon", "Nevasa", "Parner", "Pathardi", "Rahata", "Rahuri", "Sangamner", "Shevgaon", "Shrigonda", "Shrirampur"],
+    "Akola" => ["Akola", "Akot", "Balapur", "Murtizapur", "Telhara"],
+    "Amravati" => ["Amravati", "Achalpur", "Anjangaon", "Bhatkuli", "Chandur", "Daryapur", "Dhamangaon", "Morshi", "Nandgaon-Khandeshwar", "Teosa", "Warud"],
+    "Aurangabad" => ["Aurangabad", "Kannad", "Khuldabad", "Paithan", "Phulambri", "Sillod", "Soyegaon", "Vaijapur"],
+    "Beed" => ["Ambejogai", "Ashti", "Beed", "Dharur", "Georai", "Kaij", "Majalgaon", "Parli", "Patoda", "Shirur", "Wadwani"],
+    "Pune" => ["Baramati", "Bhor", "Daund", "Haveli", "Indapur", "Junnar", "Khed", "Maval", "Mulshi", "Pune City", "Shirur", "Velhe"],
+    "Mumbai" => ["Andheri", "Borivali", "Dadar", "Kurla", "Chembur", "Goregaon", "Malad", "Mulund", "Sion", "Vikhroli"],
+];
+
 ?>
 
 <!DOCTYPE html>
@@ -31,11 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Delivery Staff - Page Turner</title>
-
-    <!-- Lottie Animation Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
-
+    <title>Delivery Staff Registration</title>
     <style>
         * {
             margin: 0;
@@ -131,42 +137,65 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .error-message { color: red; }
         .success-message { color: green; }
     </style>
-</head>
+       <script>
+        var maharashtraData = <?php echo json_encode($maharashtraData); ?>;
+        
+        function updateTalukaOptions() {
+            var districtSelect = document.getElementById("district");
+            var talukaContainer = document.getElementById("taluka-container");
+            talukaContainer.innerHTML = ""; // Clear previous checkboxes
 
-<body>
-    <div class="split-form">
-        <!-- Left Side with Lottie Animation -->
-        <div class="image-side">
-            <div id="lottie-animation"></div>
-            <h1><span class="text-warning">PAGE</span><span>TURNER</span></h1>
-        </div>
+            var selectedDistrict = districtSelect.value;
+            if (selectedDistrict in maharashtraData) {
+                maharashtraData[selectedDistrict].forEach(function(taluka) {
+                    var checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.name = "taluka[]"; // Allow multiple selection
+                    checkbox.value = taluka;
+                    checkbox.id = taluka;
 
-        <!-- Right Side -->
-        <div class="form-side">
-            <h2>Add Delivery Staff</h2>
+                    var label = document.createElement("label");
+                    label.htmlFor = taluka;
+                    label.textContent = taluka;
 
-            <?php if (!empty($message)) { 
-                echo "<p class='". (strpos($message, '✅') !== false ? 'success-message' : 'error-message') ."'>$message</p>"; 
-            } ?>
-
-            <form method="post">
-                <input type="text" name="name" placeholder="Delivery Staff Name" required>
-                <input type="email" name="email" placeholder="Delivery Staff Email" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <button type="submit">Add Delivery Staff</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- JavaScript to Load Lottie Animation -->
-    <script>
-        lottie.loadAnimation({
-            container: document.getElementById('lottie-animation'),
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            path: 'images/Animation - 1741021320383.json'
-        });
+                    var div = document.createElement("div");
+                    div.appendChild(checkbox);
+                    div.appendChild(label);
+                    talukaContainer.appendChild(div);
+                });
+            }
+        }
     </script>
+</head>
+<body>
+    <h2>Delivery Staff Registration</h2>
+    <form action="" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" name="name" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br><br>
+
+        <label for="phone">Phone:</label>
+        <input type="text" name="phone" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br><br>
+
+        <label for="district">District:</label>
+            <select name="district" id="district" onchange="updateTalukaOptions()" required>
+                <option value="">Select District</option>
+                <?php foreach ($maharashtraData as $district => $talukas) { ?>
+                    <option value="<?php echo $district; ?>"><?php echo $district; ?></option>
+                <?php } ?>
+            </select>
+
+            <label>Taluka:</label>
+            <div id="taluka-container" class="taluka-container">
+                <!-- Taluka checkboxes will be added dynamically here -->
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
 </body>
 </html>

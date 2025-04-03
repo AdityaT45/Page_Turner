@@ -15,6 +15,8 @@ $result = $conn->query($query);
 $user = mysqli_fetch_assoc($result);
 
 $full_name = $user['name'] . ' ' . $user['surname'];
+$district = $user['district'];
+$taluka = $user['taluka'];
 
 $create_orders_table = "CREATE TABLE IF NOT EXISTS confirm_order (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -23,6 +25,8 @@ $create_orders_table = "CREATE TABLE IF NOT EXISTS confirm_order (
     number VARCHAR(15) NOT NULL,
     email VARCHAR(255) NOT NULL,
     address TEXT NOT NULL,
+    district VARCHAR(255) NOT NULL,
+    taluka VARCHAR(255) NOT NULL,
     total_books TEXT NOT NULL,
     total_price DECIMAL(10,2) NOT NULL,
     order_date DATE NOT NULL,
@@ -248,6 +252,12 @@ $order_id = $order['id'];
               
               <label for="adr"><i class="fa fa-address-card-o"></i> Address *</label>
               <input type="text" id="adr" name="address" value="<?php echo htmlspecialchars($user['address']); ?>" required>
+
+              <label for="district"><i class="fa fa-map-marker"></i> District *</label>
+    <input type="text" id="district" name="district" value="<?php echo htmlspecialchars($district); ?>" required>
+
+    <label for="taluka"><i class="fa fa-map-marker"></i> Taluka *</label>
+    <input type="text" id="taluka" name="taluka" value="<?php echo htmlspecialchars($taluka); ?>" required>
 
               <label for="zip"><i class="fa fa-institution"></i> Pincode *</label>
               <input type="text" id="zip" name="pincode" value="<?php echo htmlspecialchars($user['pincode']); ?>" required>

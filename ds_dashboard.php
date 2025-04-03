@@ -2,26 +2,25 @@
 include 'config.php';
 session_start();
 
-$ds_id = $_SESSION['ds_id']; // Delivery staff ID from session
-
-if (!isset($ds_id)) {
-    header('location:ds_login.php');
+// Ensure the user is logged in
+if (!isset($_SESSION['delivery_staff_id'])) {
+    header('location: ds_login.php');
+    exit(); // Prevent further execution
 }
 
+$ds_id = mysqli_real_escape_string($conn, $_SESSION['delivery_staff_id']); // Secure ID
+
 // Fetch Assigned Orders
-$assigned_orders_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM confirm_order WHERE delivery_staff_id = '$ds_id'") or die('Query failed');
+$assigned_orders_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM confirm_order WHERE delivery_staff_id = '$ds_id'") or die(mysqli_error($conn));
 $assigned_orders = mysqli_fetch_assoc($assigned_orders_query)['total'];
 
-// Fetch Pending Orders
-$pending_orders_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM confirm_order WHERE delivery_staff_id = '$ds_id' AND order_status = 'pending'") or die('Query failed');
-$pending_orders = mysqli_fetch_assoc($pending_orders_query)['total'];
 
 // Fetch Delivered Orders
-$delivered_orders_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM confirm_order WHERE delivery_staff_id = '$ds_id' AND order_status = 'delivered'") or die('Query failed');
+$delivered_orders_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM confirm_order WHERE delivery_staff_id = '$ds_id' AND order_status = 'delivered'") or die(mysqli_error($conn));
 $delivered_orders = mysqli_fetch_assoc($delivered_orders_query)['total'];
 
 // Fetch Earnings
-$earnings_query = mysqli_query($conn, "SELECT SUM(total_price) AS total FROM confirm_order WHERE delivery_staff_id = '$ds_id' AND order_status = 'delivered'") or die('Query failed');
+$earnings_query = mysqli_query($conn, "SELECT SUM(total_price) AS total FROM confirm_order WHERE delivery_staff_id = '$ds_id' AND order_status = 'delivered'") or die(mysqli_error($conn));
 $earnings = mysqli_fetch_assoc($earnings_query)['total'] ?? 0;
 
 ?>
@@ -47,21 +46,10 @@ $earnings = mysqli_fetch_assoc($earnings_query)['total'] ?? 0;
                 <p class="card-text" style="font-size: 20px; font-weight: bold; color: #007bff;">
                     <?php echo $assigned_orders; ?>
                 </p>
-                <a href="assigned_orders.php" class="btn btn-primary">View Orders</a>
+                <a href="ds_assigned_orders.php" class="btn btn-primary">View Orders</a>
             </div>
         </div>
 
-        <!-- Pending Orders -->
-        <div class="card" style="width: 15rem;">
-            <img class="card-img-top" src="./images/pending.png" alt="Pending Orders">
-            <div class="card-body">
-                <h5 class="card-title">Pending Orders</h5>
-                <p class="card-text" style="font-size: 20px; font-weight: bold; color: #ff0000;">
-                    <?php echo $pending_orders; ?>
-                </p>
-                <a href="pending_orders.php" class="btn btn-danger">View Pending</a>
-            </div>
-        </div>
 
         <!-- Delivered Orders -->
         <div class="card" style="width: 15rem;">
@@ -71,7 +59,7 @@ $earnings = mysqli_fetch_assoc($earnings_query)['total'] ?? 0;
                 <p class="card-text" style="font-size: 20px; font-weight: bold; color: #28a745;">
                     <?php echo $delivered_orders; ?>
                 </p>
-                <a href="delivered_orders.php" class="btn btn-success">View Delivered</a>
+                <a href="ds_delivered_orders.php" class="btn btn-primary">View Delivered</a>
             </div>
         </div>
 
@@ -83,7 +71,7 @@ $earnings = mysqli_fetch_assoc($earnings_query)['total'] ?? 0;
                 <p class="card-text" style="font-size: 20px; font-weight: bold; color: #007bff;">
                     ₹<?php echo $earnings; ?>
                 </p>
-                <a href="earnings.php" class="btn btn-primary">View Earnings</a>
+                <a href="ds_earnings.php" class="btn btn-primary">View Earnings</a>
             </div>
         </div>
 
