@@ -1,103 +1,150 @@
-<?php 
-include 'config.php';
-session_start();
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-$ds_id = $_SESSION['ds_id']; // Delivery staff ID from session
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background:#fdfce5;
+        }
 
-if (!isset($ds_id)) {
-    header('location:ds_login.php');
-}
+        /* Split Layout Form */
+        .split-form {
+            display: flex;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
 
-// Fetch Assigned Orders
-$assigned_orders_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM confirm_order WHERE delivery_staff_id = '$ds_id'") or die('Query failed');
-$assigned_orders = mysqli_fetch_assoc($assigned_orders_query)['total'];
+        .split-form .image-side {
+            flex: 1;
+            background: #0f3859;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
 
-// Fetch Pending Orders
-$pending_orders_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM confirm_order WHERE delivery_staff_id = '$ds_id' AND order_status = 'pending'") or die('Query failed');
-$pending_orders = mysqli_fetch_assoc($pending_orders_query)['total'];
+        /* Lottie Animation */
+        #lottie-animation {
+            width: 350px;
+            height: 350px;
+        }
 
-// Fetch Delivered Orders
-$delivered_orders_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM confirm_order WHERE delivery_staff_id = '$ds_id' AND order_status = 'delivered'") or die('Query failed');
-$delivered_orders = mysqli_fetch_assoc($delivered_orders_query)['total'];
+        .split-form .form-side {
+            flex: 1;
+            padding: 3rem;
+        }
 
-// Fetch Earnings
-$earnings_query = mysqli_query($conn, "SELECT SUM(total_price) AS total FROM confirm_order WHERE delivery_staff_id = '$ds_id' AND order_status = 'delivered'") or die('Query failed');
-$earnings = mysqli_fetch_assoc($earnings_query)['total'] ?? 0;
+        .split-form h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #333;
+        }
 
-?>
+        .split-form input {
+            width: 100%;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border: none;
+            border-bottom: 2px solid #eee;
+            outline: none;
+            transition: border-color 0.3s;
+        }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delivery Staff Dashboard</title>
-    <link rel="stylesheet" href="./css/admin.css">
-</head>
-<body style="background-color: lightgrey;">
-    <?php include 'ds_header.php'; ?>
-    <br>
+        .split-form input:focus {
+            border-bottom-color: #0f3859;
+        }
 
-    <div class="main_box">
-        <!-- Assigned Orders -->
-        <div class="card" style="width: 15rem;">
-            <img class="card-img-top" src="./images/orders.png" alt="Assigned Orders">
-            <div class="card-body">
-                <h5 class="card-title">Assigned Orders</h5>
-                <p class="card-text" style="font-size: 20px; font-weight: bold; color: #007bff;">
-                    <?php echo $assigned_orders; ?>
-                </p>
-                <a href="assigned_orders.php" class="btn btn-primary">View Orders</a>
-            </div>
-        </div>
+        .split-form button {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            background: #0f3859;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
 
-        <!-- Pending Orders -->
-        <div class="card" style="width: 15rem;">
-            <img class="card-img-top" src="./images/pending.png" alt="Pending Orders">
-            <div class="card-body">
-                <h5 class="card-title">Pending Orders</h5>
-                <p class="card-text" style="font-size: 20px; font-weight: bold; color: #ff0000;">
-                    <?php echo $pending_orders; ?>
-                </p>
-                <a href="pending_orders.php" class="btn btn-danger">View Pending</a>
-            </div>
-        </div>
+        .split-form button:hover {
+            transform: translateY(-2px);
+        }
 
-        <!-- Delivered Orders -->
-        <div class="card" style="width: 15rem;">
-            <img class="card-img-top" src="./images/delivered.png" alt="Delivered Orders">
-            <div class="card-body">
-                <h5 class="card-title">Delivered Orders</h5>
-                <p class="card-text" style="font-size: 20px; font-weight: bold; color: #28a745;">
-                    <?php echo $delivered_orders; ?>
-                </p>
-                <a href="delivered_orders.php" class="btn btn-success">View Delivered</a>
-            </div>
-        </div>
+        .error-message {
+            text-align: center;
+            color: red;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
 
-        <!-- Earnings -->
-        <div class="card" style="width: 15rem;">
-            <img class="card-img-top" src="./images/earnings.png" alt="Earnings">
-            <div class="card-body">
-                <h5 class="card-title">Total Earnings (₹)</h5>
-                <p class="card-text" style="font-size: 20px; font-weight: bold; color: #007bff;">
-                    ₹<?php echo $earnings; ?>
-                </p>
-                <a href="earnings.php" class="btn btn-primary">View Earnings</a>
-            </div>
-        </div>
+        .link {
+            text-decoration: none;
+            color: #FF6B6B;
+            font-weight: bold;
+        }
 
-        <!-- Profile -->
-        <div class="card" style="width: 15rem;">
-            <img class="card-img-top" src="./images/profile.png" alt="Profile">
-            <div class="card-body">
-                <h5 class="card-title">Manage Profile</h5>
-                <p class="card-text">Update your personal details.</p>
-                <a href="ds_profile.php" class="btn btn-primary">Edit Profile</a>
-            </div>
-        </div>
-    </div>
+        .link:hover {
+            text-decoration: underline;
+        }
+        form {
+        width: 100%;
+        max-width: 350px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        }
 
-    <br><br>
-</body>
-</html>
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            color: #0f3859;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #0f3859;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #0f3859;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: #092a42;
+        }
+    </style>

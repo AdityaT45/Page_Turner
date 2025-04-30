@@ -2,6 +2,8 @@
 include 'config.php';
 session_start();
 
+$message = ''; // Initialize error message
+
 if (isset($_POST['login'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
@@ -11,30 +13,40 @@ if (isset($_POST['login'])) {
     } elseif (empty($password)) {
         $message = 'Please Enter Password';
     } else {
-        // Check login with email
-        $select_users = $conn->query("SELECT * FROM users_info WHERE email = '$email' and password = '$password'") or die('Query Failed');
-    }
+        $select_users = $conn->query("SELECT * FROM users_info WHERE email = '$email'") or die('Query Failed');
 
-    if (mysqli_num_rows($select_users) == 1) {
-        $row = mysqli_fetch_assoc($select_users);
+        if (mysqli_num_rows($select_users) == 1) {
+            $row = mysqli_fetch_assoc($select_users);
 
-        if ($row['user_type'] == 'Admin') {
-            $_SESSION['admin_name'] = $row['name'];
-            $_SESSION['admin_email'] = $row['email'];
-            $_SESSION['admin_id'] = $row['Id'];
-            header('location:admin_dashboard.php');
-        } elseif ($row['user_type'] == 'User') {
-            $_SESSION['user_name'] = $row['name'];
-            $_SESSION['user_email'] = $row['email'];
-            $_SESSION['user_id'] = $row['Id'];
-            header('location:index.php');
+            // If password is NOT hashed
+            if ($password == $row['password']) {
+                if (strtolower($row['user_type']) == 'admin') {
+                    $_SESSION['admin_name'] = $row['name'];
+                    $_SESSION['admin_email'] = $row['email'];
+                    $_SESSION['admin_id'] = $row['Id'];
+                    header('location:admin_dashboard.php');
+                    exit();
+                } elseif (strtolower($row['user_type']) == 'user') {
+                    $_SESSION['user_name'] = $row['name'];
+                    $_SESSION['user_email'] = $row['email'];
+                    $_SESSION['user_id'] = $row['Id'];
+                    header('location:index.php');
+                    exit();
+                } else {
+                    $message = "Invalid user type.";
+                }
+            } else {
+                $message = "Incorrect Email or Password!";
+            }
+        } else {
+            $message = "Incorrect Email or Password!";
         }
-    } else {
-        $message = "Incorrect Email or Password!";
     }
 }
+
 ?>
 
+<!-- HTML STARTS -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,10 +54,7 @@ if (isset($_POST['login'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Page Turner</title>
-
-    <!-- Lottie Animation Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
-
     <style>
         * {
             margin: 0;
@@ -151,79 +160,76 @@ if (isset($_POST['login'])) {
             text-decoration: underline;
         }
         form {
-    width: 100%;
-    max-width: 350px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-}
+            width: 100%;
+            max-width: 350px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+        }
 
-label {
-    font-weight: bold;
-    margin-top: 10px;
-    color: #0f3859;
-}
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            color: #0f3859;
+        }
 
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0 15px 0;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    outline: none;
-    transition: border-color 0.3s;
-}
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
 
-input:focus {
-    border-color: #0f3859;
-}
+        input:focus {
+            border-color: #0f3859;
+        }
 
-button {
-    width: 100%;
-    padding: 12px;
-    background: #0f3859;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: transform 0.3s, background 0.3s;
-}
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #0f3859;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.3s, background 0.3s;
+        }
 
-button:hover {
-    transform: translateY(-2px);
-    background: #092a42;
-}
+        button:hover {
+            transform: translateY(-2px);
+            background: #092a42;
+        }
     </style>
 </head>
 
 <body>
-
     <div class="split-form">
-        <!-- Left Side with Lottie Animation -->
+        <!-- Lottie Side -->
         <div class="image-side">
-           
             <div id="lottie-animation"></div>
             <h1><span class="text-warning">PAGE</span><span>TURNER</span></h1>
         </div>
 
-        <!-- Right Side -->
+        <!-- Login Form Side -->
         <div class="form-side">
             <h1>Sign In</h1>
 
-            <!-- Display Error Message -->
-            <?php if (isset($message)) { echo "<p class='error-message'>$message</p>"; } ?>
+            <?php if (!empty($message)) { echo "<p class='error-message'>$message</p>"; } ?>
 
             <form action="" method="post">
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" placeholder="Enter Email" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter Email" required>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" placeholder="Enter Password" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter Password" required>
 
-    <button type="submit" name="login">Login</button>
-</form>
+                <button type="submit" name="login">Login</button>
+            </form>
 
             <p style="text-align: center; margin-top: 1rem;">
                 Don't have an account? <a class="link" href="register.php">Register</a>
@@ -233,17 +239,15 @@ button:hover {
         </div>
     </div>
 
-    <!-- JavaScript to Load Lottie Animation -->
     <script>
         lottie.loadAnimation({
             container: document.getElementById('lottie-animation'),
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: 'images/Animation - 1741021320383.json' // Your Lottie animation file
+            path: 'images/Animation - 1741021320383.json'
         });
     </script>
-
 </body>
 
 </html>

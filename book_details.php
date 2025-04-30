@@ -297,7 +297,13 @@ if (isset($_POST['add_to_cart'])) {
                                 <img src="./added_books/<?php echo $fetch_book['image']; ?>" alt="<?php echo $fetch_book['name']; ?>">
                             </div>
                             <div class="col_box">
-                                <h1 class="book-title"><?php echo $fetch_book['name']; ?> (<?php echo $fetch_book['binding']; ?>) </h1>
+                            <h1 class="book-title">
+    <?php echo $fetch_book['name']; ?>
+    <?php if (!empty($fetch_book['binding'])): ?>
+        (<?php echo $fetch_book['binding']; ?>)
+    <?php endif; ?>
+</h1>
+
                                 <p class="book-author">By: <?php echo $fetch_book['author']; ?></p>
                                
                                 <h1 class="book-price">₹<?php echo $fetch_book['price']; ?></h1>
@@ -358,7 +364,8 @@ if (isset($_POST['add_to_cart'])) {
         <div class="carousel">
             <?php
             $book_category = $fetch_book['category']; // Get current book category
-            $related_books = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='$book_category' AND bid != '$get_id' LIMIT 10");
+            // Fetch related books randomly, excluding current book
+            $related_books = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='$book_category' AND bid != '$get_id' ORDER BY RAND() LIMIT 10");
 
             if (mysqli_num_rows($related_books) > 0) {
                 while ($related = mysqli_fetch_assoc($related_books)) {
@@ -382,6 +389,7 @@ if (isset($_POST['add_to_cart'])) {
 </div>
 
 
+
 <!-- New Arrivals Carousel -->
 <div class="related-books">
     <h3>New Arrivals</h3>
@@ -389,11 +397,11 @@ if (isset($_POST['add_to_cart'])) {
         <button class="prev-btn">&#10094;</button>
         <div class="carousel">
             <?php
-            // Fetch new arrival books (latest added books)
-            $new_arrivals = mysqli_query($conn, "SELECT * FROM `book_info` ORDER BY publisher_date DESC LIMIT 10");
+            // Fetch 10 random books for shuffle format
+            $shuffled_books = mysqli_query($conn, "SELECT * FROM `book_info` ORDER BY RAND() LIMIT 10");
 
-            if (mysqli_num_rows($new_arrivals) > 0) {
-                while ($new_book = mysqli_fetch_assoc($new_arrivals)) {
+            if (mysqli_num_rows($shuffled_books) > 0) {
+                while ($new_book = mysqli_fetch_assoc($shuffled_books)) {
                     ?>
                     <div class="carousel-item">
                         <img src="./added_books/<?php echo $new_book['image']; ?>" alt="<?php echo $new_book['name']; ?>">
@@ -404,13 +412,14 @@ if (isset($_POST['add_to_cart'])) {
                     <?php
                 }
             } else {
-                echo "<p>No new arrivals at the moment.</p>";
+                echo "<p>No books available right now.</p>";
             }
             ?>
         </div>
         <button class="next-btn">&#10095;</button>
     </div>
 </div>
+
 
 
 <div class="banner"></div>

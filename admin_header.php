@@ -109,7 +109,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
         <div class="nav">
             <a href="admin_dashboard.php" class="<?php echo ($current_page == 'admin_dashboard.php') ? 'active' : ''; ?>">Dashboard</a>
-            <a href="admin_index.php" class="<?php echo ($current_page == 'admin_index.php') ? 'active' : ''; ?>">old page</a>
             <a href="admin_orders.php" class="<?php echo ($current_page == 'admin_orders.php') ? 'active' : ''; ?>">Orders</a>
             <a href="admin_pending_orders.php" class="<?php echo ($current_page == 'admin_pending_orders.php') ? 'active' : ''; ?>">Pending Orders</a>
             <a href="admin_delivered_orders.php" class="<?php echo ($current_page == 'admin_delivered_orders.php') ? 'active' : ''; ?>">Delivered Orders</a>

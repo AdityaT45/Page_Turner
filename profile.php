@@ -16,9 +16,8 @@ if ($result->num_rows > 0) {
     die("User not found!");
 }
 
-// Success message after update
 $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
-unset($_SESSION['message']); // Clear message after displaying
+unset($_SESSION['message']);
 ?>
 
 <!DOCTYPE html>
@@ -28,58 +27,99 @@ unset($_SESSION['message']); // Clear message after displaying
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
-        body { background: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            /* min-height: 100vh; */
+            /* display: flex; */
+            justify-content: center;
+            align-items: center;
+            background: #fdfce5;
+            /* padding: 20px; */
+        }
+
         .profile-card {
-            background: white; width: 400px; padding: 25px; text-align: center;
-            border-radius: 12px; box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
-            position: relative; overflow: hidden;
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin: 50px 0 50px 550px;
+
         }
 
-        .profile-card::before {
-           
+        h2 {
+            color: #0f3859;
+            margin-bottom: 20px;
         }
 
-        .profile-image {
-            width: 100px; height: 100px; border-radius: 50%; background: #ddd;
-            display: block; margin: 70px auto 10px; border: 5px solid white;
+        .details {
+            text-align: left;
         }
 
-        h2 { color: #0a3d62; margin-bottom: 10px; }
-
-        .details { 
-            display: flex; flex-direction: column; align-items: center;
-            margin-top: 10px; 
+        .details p {
+            font-size: 16px;
+            margin: 10px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
         }
 
-        .details p { 
-            width: 100%; padding: 8px; font-size: 16px;
-            border-bottom: 1px solid #ddd; text-align: left;
+        .details p span {
+            font-weight: bold;
+            color: #333;
         }
-
-        .details p span { font-weight: bold; color: #333; }
 
         .message {
-            text-align: center; color: green; font-weight: bold; 
-            margin-bottom: 10px;
+            color: green;
+            font-weight: bold;
+            margin-bottom: 15px;
         }
 
         .edit-btn {
-            display: block; width: 100%; padding: 12px;
-            background: #0a3d62; color: white; border: none;
-            border-radius: 8px; font-size: 16px; cursor: pointer;
-            transition: 0.3s; margin-top: 15px;
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: #0f3859;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
         }
 
-        .edit-btn:hover { background: #07538f; }
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            background: #092a42;
+        }
+
+        @media (max-width: 500px) {
+            .profile-card {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .details p {
+                font-size: 15px;
+            }
+        }
     </style>
 </head>
 <body>
+<?php include 'index_header.php' ?>
 
 <div class="profile-card">
-   
-    
     <h2><?= htmlspecialchars($user['name']) . " " . htmlspecialchars($user['surname']) ?></h2>
 
     <?php if (!empty($message)) { ?>
@@ -99,6 +139,8 @@ unset($_SESSION['message']); // Clear message after displaying
 
     <button class="edit-btn" onclick="window.location.href='update_user_info.php'">Edit Profile</button>
 </div>
+
+<?php include 'index_footer.php' ?>
 
 </body>
 </html>

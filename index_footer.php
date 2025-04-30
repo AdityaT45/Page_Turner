@@ -4,7 +4,7 @@
 .footer {
     background: #0f3859;
     color: white;
-    padding: 40px 0;
+    padding: 40px 0 0;
     text-align: center;
     font-family: 'Poppins', sans-serif;
 }

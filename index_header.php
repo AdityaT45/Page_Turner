@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <style>
         * {
             text-decoration: none;
@@ -18,7 +19,48 @@
             justify-content: space-between;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
             border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            
         }
+
+        .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: transparent;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #0f3859;
+    min-width: 160px;
+    z-index: 1;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
 
         .logo a {
             font-size: 28px;
@@ -39,6 +81,7 @@
             font-size: 18px;
             transition: all 0.3s ease-in-out;
             position: relative;
+            text-decoration: none;
         }
 
         .nav a::before {
@@ -127,7 +170,7 @@
         }
 
         .sub-menu {
-            background: transparent;
+            background:  #0f3859;
             padding: 20px;
             margin: 10px;
             border-bottom-right-radius: 16px;
@@ -161,13 +204,15 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
         }
+        
     </style>
+    
 </head>
 
 <body>
     <header>
     <div class="logo">
-            <a href="admin_index.php"><span class="text-warning">Page</span> <span class="me text-light">Turner</span></a>
+            <a href="index.php"><span class="text-warning">Page</span> <span class="me text-light">Turner</span></a>
         </div>
 
         <div class="nav">
@@ -186,6 +231,9 @@
             <a href="submit_query.php">Contact Us</a>
             <a href="cart.php">Cart</a>
             <a href="orders.php">Orders</a>
+            <a href="profile.php">Profile</a>
+            
+            <a href="all_books.php">All Books</a>
         </div>
 
         <div class="user-search">
@@ -209,6 +257,8 @@
             <a href="cart.php" class="sub-menu-link"><p>Cart</p></a>
             <a href="contact-us.php" class="sub-menu-link"><p>Contact Us</p></a>
             <a href="orders.php" class="sub-menu-link"><p>Order History</p></a>
+            <a href="profile.php" class="sub-menu-link"><p>Profile</p></a>
+        
             <a href="logout.php" class="sub-menu-link"><p style="background:red;color:white;text-align:center;">Logout</p></a>
         </div>
     </div>

@@ -104,96 +104,189 @@ $maharashtraData = [
     <title>Update Profile</title>
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
-        body { background: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        
-        .container {
-            background: white; width: 500px; padding: 30px;
-            border-radius: 12px; box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
-        }
-        
-        h2 { text-align: center; color: #0a3d62; margin-bottom: 20px; }
-        
-        .form-group {
-            display: flex; justify-content: space-between; gap: 10px; 
-            margin-bottom: 12px;
-        }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { 
+    display: block; 
+    justify-content: center; 
+    align-items: center; 
+    background: #fdfce5; 
+    min-height: 100vh; 
+}
 
-        .form-group label { width: 45%; font-weight: bold; color: #333; }
-        
-        input {
-            width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px;
-            transition: 0.3s; font-size: 16px;
-        }
+.split-form { 
+    display: flex; 
+    background: white; 
+    border-radius: 20px; 
+    overflow: hidden; 
+    max-width: 1000px; 
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); 
+    margin-left:300px
+}
 
-        select {
-            width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px;
-            transition: 0.3s; font-size: 16px;
-        }
-        
-        input:focus { border-color: #0a3d62; outline: none; }
-        
-        button {
-            width: 100%; padding: 12px; background: #0a3d62; color: white;
-            border: none; border-radius: 8px; font-size: 16px; cursor: pointer;
-            transition: 0.3s; margin-top: 10px;
-        }
-        
-        button:hover { background: #07538f; }
+.image-side { 
+    flex: 1; 
+    background: #0f3859; 
+    padding: 2rem; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    color: white; 
+    text-align: center; 
+}
 
-        .message {
-            text-align: center; color: green; font-weight: bold; 
-            margin-bottom: 10px;
-        }
-    </style>
+#lottie-animation { 
+    width: 350px; 
+    height: 350px; 
+}
+
+.form-side { 
+    flex: 1; 
+    padding: 3rem; 
+    display: flex;
+    flex-direction: column;
+}
+
+h1 { 
+    text-align: center; 
+    margin-bottom: 1rem; 
+    color: #333; 
+}
+
+.input-group { 
+    display: flex; 
+    justify-content: space-between; 
+    gap: 20px;
+}
+
+input, select { 
+    width: 200px; 
+    padding: 10px; 
+    margin-bottom: 15px; 
+    border: 2px solid #ddd; 
+    border-radius: 5px; 
+    outline: none; 
+    transition: border-color 0.3s; 
+}
+
+input:focus, select:focus { 
+    border-color: #0f3859; 
+}
+
+button { 
+    width: 100%; 
+    padding: 12px; 
+    background: #0f3859; 
+    color: white; 
+    border: none; 
+    border-radius: 25px; 
+    cursor: pointer; 
+    font-size: 16px; 
+    font-weight: bold; 
+    transition: transform 0.3s, background 0.3s; 
+}
+
+button:hover { 
+    transform: translateY(-2px); 
+    background: #092a42; 
+}
+
+.error-message { 
+    text-align: center; 
+    color: red; 
+    font-weight: bold; 
+    margin-bottom: 1rem; 
+}
+
+.link { 
+    text-decoration: none; 
+    color: #FF6B6B; 
+    font-weight: bold; 
+    display: block; 
+    text-align: center; 
+    margin-top: 1rem; 
+}
+
+.link:hover { 
+    text-decoration: underline; 
+}
+
+  </style>
 </head>
 <body>
+<?php include 'index_header.php' ?>
 
 <h2>Update Profile</h2>
 
-<form action="" method="post">
-    <label>Name:</label>
-    <input type="text" name="name" value="<?= htmlspecialchars($user['name']) ?>" required><br>
+<!-- Split Form Layout -->
+<!-- Split Form Layout -->
+<div class="split-form">
+    <!-- Left Side Image (can be Lottie or static image) -->
+    <div class="image-side">
+        <div id="lottie-animation"></div> <!-- Lottie Animation Placeholder -->
+        <h1>Update Your Details</h1>
+    </div>
 
-    <label>Surname:</label>
-    <input type="text" name="surname" value="<?= htmlspecialchars($user['surname']) ?>" required><br>
+    <!-- Right Side Form -->
+    <div class="form-side">
+        <form action="" method="post">
+            <div class="input-group">
+                <div>
+                    <label>Name:</label>
+                    <input type="text" name="name" value="<?= htmlspecialchars($user['name']) ?>" required><br>
 
-    <label>Username:</label>
-    <input type="text" name="username" value="<?= htmlspecialchars($user['username']) ?>" required><br>
+                    <label>Surname:</label>
+                    <input type="text" name="surname" value="<?= htmlspecialchars($user['surname']) ?>" required><br>
 
-    <label>Email:</label>
-    <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required><br>
+                    <label>Email:</label>
+                    <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required><br>
 
-    <label>Password (Leave blank to keep old password):</label>
-    <input type="password" name="password"><br>
+                    <label>Password (Leave blank to keep old password):</label>
+                    <input type="password" name="password"><br>
+                </div>
 
-    <label>Address:</label>
-    <input type="text" name="address" value="<?= htmlspecialchars($user['address']) ?>"><br>
+                <div>
+                    <label>Username:</label>
+                    <input type="text" name="username" value="<?= htmlspecialchars($user['username']) ?>" required><br>
 
-    <label>District:</label>
-    <select name="district" id="district" onchange="updateTalukas()" required>
-        <option value="">Select District</option>
-        <?php foreach ($maharashtraData as $district => $talukas): ?>
-            <option value="<?= $district ?>" <?= $user['district'] == $district ? 'selected' : '' ?>><?= $district ?></option>
-        <?php endforeach; ?>
-    </select><br>
+                    <label>Address:</label>
+                    <input type="text" name="address" value="<?= htmlspecialchars($user['address']) ?>"><br>
 
-    <label>Taluka:</label>
-    <select name="taluka" id="taluka" required>
-        <option value="<?= htmlspecialchars($user['taluka']) ?>" selected><?= htmlspecialchars($user['taluka']) ?></option>
-    </select><br>
+                    <label>State:</label>
+                    <input type="text" name="state" value="<?= htmlspecialchars($user['state']) ?>" required ><br>
 
-    <label>State:</label>
-    <input type="text" name="state" value="<?= htmlspecialchars($user['state']) ?>" required readonly><br>
+                    <label>Country:</label>
+                    <input type="text" name="country" value="<?= htmlspecialchars($user['country']) ?>" required><br>
+                </div>
+            </div>
 
-    <label>Country:</label>
-    <input type="text" name="country" value="<?= htmlspecialchars($user['country']) ?>" required><br>
+            <div class="input-group">
+                <div>
+                    <label>District:</label>
+                    <select name="district" id="district" onchange="updateTalukas()" required>
+                        <option value="">Select District</option>
+                        <?php foreach ($maharashtraData as $district => $talukas): ?>
+                            <option value="<?= $district ?>" <?= $user['district'] == $district ? 'selected' : '' ?>><?= $district ?></option>
+                        <?php endforeach; ?>
+                    </select><br>
+                </div>
 
-    <label>Pincode:</label>
-    <input type="text" name="pincode" value="<?= htmlspecialchars($user['pincode']) ?>"><br>
+                <div>
+                    <label>Taluka:</label>
+                    <select name="taluka" id="taluka" required>
+                        <option value="<?= htmlspecialchars($user['taluka']) ?>" selected><?= htmlspecialchars($user['taluka']) ?></option>
+                    </select><br>
 
-    <button type="submit" name="update">Update</button>
-</form>
+                    <label>Pincode:</label>
+                    <input type="text" name="pincode" value="<?= htmlspecialchars($user['pincode']) ?>"><br>
+                </div>
+            </div>
+
+            <button type="submit" name="update">Update</button>
+        </form>
+    </div>
+</div>
+
 
 <script>
     var maharashtraData = {
@@ -251,6 +344,16 @@ $maharashtraData = [
         }
     }
 </script>
+
+<script>
+        lottie.loadAnimation({
+            container: document.getElementById('lottie-animation'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'images/Animation - 1741021320383.json'
+        });
+    </script>
 
 </body>
 </html>

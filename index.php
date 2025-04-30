@@ -41,12 +41,12 @@ if (isset($_POST['add_to_cart'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/hello.css">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
     <title>Page Turner</title>
+    
 
     <style>
         * {
@@ -129,8 +129,22 @@ if (isset($_POST['add_to_cart'])) {
     width: 100%;
     padding-bottom: 50px;
 }
-
 .swiper-slide {
+    background: #fff;
+    
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    transition: 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.swiper-slidea {
     background: #fff;
     border-radius: 10px;
     text-align: center;
@@ -139,6 +153,8 @@ if (isset($_POST['add_to_cart'])) {
     transition: 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
+    height: 286px;
+    margin: 0 10px 0;
     align-items: center;
     justify-content: center;
     
@@ -210,7 +226,7 @@ if (isset($_POST['add_to_cart'])) {
         }
 
         .book-img {
-    width: 180px;  /* Increased size */
+    width: 180px;  
     height: 250px; /* Increased size */
     object-fit: cover;
     margin: auto;
@@ -271,7 +287,7 @@ if (isset($_POST['add_to_cart'])) {
     <?php include 'index_header.php' ?>
 
     <!-- Carousel Section -->
-    <div id="bookCarousel" class="carousel slide container-fluid" data-bs-ride="carousel" data-bs-interval="2000">
+    <div id="bookCarousel" class="carousel slide container-fluid mb-" data-bs-ride="carousel" data-bs-interval="2000">
     <div class="carousel-inner">
         <div class="carousel-item active">
             <img src="https://wowslider.com/sliders/demo-77/data1/images/road220058.jpg" class="d-block w-100" alt="Slide 1">
@@ -348,43 +364,39 @@ if (isset($_SESSION['user_name'])) {
             </h2>
         </div>
     </section>
-    <section class="carousel-container ">
-        <div class="swiper ">
-            <div class="swiper-wrapper">
+    <section class="carousel-container">
+    <div class="swiper">
+        <div class="swiper-wrapper">
             <?php
-session_start(); // Start the session
+            session_start(); // Start the session
 
-$select_book = mysqli_query($conn, "SELECT * FROM `book_info` ORDER BY date DESC LIMIT 12") or die('Query failed');
-if (mysqli_num_rows($select_book) > 0) {
-    while ($fetch_book = mysqli_fetch_assoc($select_book)) {
-        $discount = rand(10, 30);
-        $discounted_price = $fetch_book['price'] - ($fetch_book['price'] * ($discount / 100));
-?>
-        <div class="swiper-slide">
-            <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
-            <a href="<?php echo isset($_SESSION['user_id']) ? 'book_details.php?details=' . $fetch_book['bid'] : 'login.php'; ?>">
-                <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
-            </a>
-            <div class="book-name"><?php echo $fetch_book['name']; ?></div>
-            <div class="author">by <?php echo $fetch_book['author']; ?></div>
-            <div class="stars">⭐⭐⭐⭐⭐</div>
-            <div class="price">₹<?php echo number_format($discounted_price, 2); ?>
-                <span class="old-price">₹<?php echo number_format($fetch_book['price'], 2); ?></span>
-            </div>
+            $select_book = mysqli_query($conn, "SELECT * FROM `book_info` ORDER BY date DESC LIMIT 12") or die('Query failed');
+            if (mysqli_num_rows($select_book) > 0) {
+                while ($fetch_book = mysqli_fetch_assoc($select_book)) {
+            ?>
+                <div class="swiper-slide">
+                    <a href="<?php echo isset($_SESSION['user_id']) ? 'book_details.php?details=' . $fetch_book['bid'] : 'login.php'; ?>">
+                        <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
+                    </a>
+                    <div class="book-name"><?php echo $fetch_book['name']; ?></div>
+                    <div class="author">by <?php echo $fetch_book['author']; ?></div>
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <div class="price">₹<?php echo number_format($fetch_book['price'], 2); ?></div>
+                </div>
+            <?php
+                }
+            } else {
+                echo '<p class="empty">No Books Available!</p>';
+            }
+            ?>
         </div>
-<?php
-    }
-} else {
-    echo '<p class="empty">No Books Available!</p>';
-}
-?>
-            </div>
 
-            <!-- Navigation Buttons -->
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
-        </div>
-    </section>
+        <!-- Navigation Buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+
     <section id="Best Sellers">
         <div class="container-fluid mx-auto  ">
             <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
@@ -393,41 +405,89 @@ if (mysqli_num_rows($select_book) > 0) {
             </h2>
         </div>
     </section>
-    <section class="carousel-container ">
-        <div class="swiper ">
-            <div class="swiper-wrapper">
-                <?php
-                $select_book = mysqli_query($conn, "SELECT * FROM `book_info` ORDER BY date DESC LIMIT 12") or die('Query failed');
-                if (mysqli_num_rows($select_book) > 0) {
-                    while ($fetch_book = mysqli_fetch_assoc($select_book)) {
-                        $discount = rand(10, 30); // Random discount percentage
-                        $discounted_price = $fetch_book['price'] - ($fetch_book['price'] * ($discount / 100));
-                ?>
-                        <div class="swiper-slide">
-    <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
-    <a href="login.php?details=<?php echo $fetch_book['bid']; ?>">
-        <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
-    </a>
-    <div class="book-name"><?php echo $fetch_book['name']; ?></div>
-    <div class="author">by <?php echo $fetch_book['author']; ?></div>
-    <div class="stars">⭐⭐⭐⭐⭐</div>
-    <div class="price">₹<?php echo number_format($discounted_price, 2); ?>
-        <span class="old-price">₹<?php echo number_format($fetch_book['price'], 2); ?></span>
-    </div>
-</div>
-                <?php
-                    }
-                } else {
-                    echo '<p class="empty">No Books Available!</p>';
-                }
-                ?>
-            </div>
+    <section class="carousel-container mt-4">
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <?php
+            session_start(); // Make sure session is started
 
-            <!-- Navigation Buttons -->
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
+            // Shuffle books randomly
+            $select_book = mysqli_query($conn, "SELECT * FROM `book_info` ORDER BY RAND() LIMIT 12") or die('Query failed');
+
+            if (mysqli_num_rows($select_book) > 0) {
+                while ($fetch_book = mysqli_fetch_assoc($select_book)) {
+            ?>
+                    <div class="swiper-slide">
+                        <a href="<?php echo isset($_SESSION['user_id']) ? 'book_details.php?details=' . $fetch_book['bid'] : 'login.php'; ?>">
+                            <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
+                        </a>
+                        <div class="book-name"><?php echo $fetch_book['name']; ?></div>
+                        <div class="author">by <?php echo $fetch_book['author']; ?></div>
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <div class="price">₹<?php echo number_format($fetch_book['price'], 2); ?></div>
+                    </div>
+            <?php
+                }
+            } else {
+                echo '<p class="empty">No Books Available!</p>';
+            }
+            ?>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+
+
+
+
+
+
+<section id="Adventure">
+        <div class="container-fluid mx-auto  ">
+            <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
+            
+            Adventure
+            </h2>
         </div>
     </section>
+    <section class="carousel-container">
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <?php
+            session_start(); // Ensure session is started
+
+            // Shuffle Adventure books randomly
+            $select_magical = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='Adventure' ORDER BY RAND() LIMIT 12") or die('Query failed');
+
+            if (mysqli_num_rows($select_magical) > 0) {
+                while ($fetch_book = mysqli_fetch_assoc($select_magical)) {
+            ?>
+                    <div class="swiper-slide">
+                        <a href="<?php echo isset($_SESSION['user_id']) ? 'book_details.php?details=' . $fetch_book['bid'] : 'login.php'; ?>">
+                            <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
+                        </a>
+                        <div class="book-name"><?php echo $fetch_book['name']; ?></div>
+                        <div class="author">by <?php echo $fetch_book['author']; ?></div>
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <div class="price">₹<?php echo number_format($fetch_book['price'], 2); ?></div>
+                    </div>
+            <?php
+                }
+            } else {
+                echo '<p class="empty text-center">No Adventure Books Available!</p>';
+            }
+            ?>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+
 
 
     <div class="banner"></div>
@@ -442,32 +502,30 @@ if (mysqli_num_rows($select_book) > 0) {
         </div>
     </section>
     <section class="carousel-container">
-
     <div class="swiper">
         <div class="swiper-wrapper">
             <?php
-            $select_book = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='Magical' ORDER BY date DESC LIMIT 12") or die('Query failed');
-            if (mysqli_num_rows($select_book) > 0) {
-                while ($fetch_book = mysqli_fetch_assoc($select_book)) {
-                    $discount = rand(10, 30); // Random discount percentage
-                    $discounted_price = $fetch_book['price'] - ($fetch_book['price'] * ($discount / 100));
+            session_start(); // Ensure session is started
+
+            // Shuffle Magical books randomly
+            $select_magical = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='Magical' ORDER BY RAND() LIMIT 12") or die('Query failed');
+
+            if (mysqli_num_rows($select_magical) > 0) {
+                while ($fetch_book = mysqli_fetch_assoc($select_magical)) {
             ?>
                     <div class="swiper-slide">
-                        <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
-                        <a href="login.php?details=<?php echo $fetch_book['bid']; ?>">
+                        <a href="<?php echo isset($_SESSION['user_id']) ? 'book_details.php?details=' . $fetch_book['bid'] : 'login.php'; ?>">
                             <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
                         </a>
                         <div class="book-name"><?php echo $fetch_book['name']; ?></div>
                         <div class="author">by <?php echo $fetch_book['author']; ?></div>
                         <div class="stars">⭐⭐⭐⭐⭐</div>
-                        <div class="price">₹<?php echo number_format($discounted_price, 2); ?>
-                            <span class="old-price">₹<?php echo number_format($fetch_book['price'], 2); ?></span>
-                        </div>
+                        <div class="price">₹<?php echo number_format($fetch_book['price'], 2); ?></div>
                     </div>
             <?php
                 }
             } else {
-                echo '<p class="empty">No Books Available!</p>';
+                echo '<p class="empty text-center">No Magical Books Available!</p>';
             }
             ?>
         </div>
@@ -477,6 +535,7 @@ if (mysqli_num_rows($select_book) > 0) {
         <div class="swiper-button-next"></div>
     </div>
 </section>
+
 
 <section id="Knowledge">
         <div class="container-fluid mx-auto  ">
@@ -487,40 +546,30 @@ if (mysqli_num_rows($select_book) > 0) {
         </div>
     </section>
     <section class="carousel-container">
-
     <div class="swiper">
         <div class="swiper-wrapper">
             <?php
-            $select_book = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='Knowledge' ORDER BY date DESC LIMIT 12") or die('Query failed');
-            if (mysqli_num_rows($select_book) > 0) {
-                while ($fetch_book = mysqli_fetch_assoc($select_book)) {
-                    $discount = rand(10, 30); // Random discount
-                    $discounted_price = $fetch_book['price'] - ($fetch_book['price'] * ($discount / 100));
+            session_start(); // Ensure session is started
+
+            // Shuffle Knowledge books randomly
+            $select_magical = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='Knowledge' ORDER BY RAND() LIMIT 12") or die('Query failed');
+
+            if (mysqli_num_rows($select_magical) > 0) {
+                while ($fetch_book = mysqli_fetch_assoc($select_magical)) {
             ?>
                     <div class="swiper-slide">
-                        <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
-                        <a href="login.php?details=<?php echo $fetch_book['bid']; ?>">
+                        <a href="<?php echo isset($_SESSION['user_id']) ? 'book_details.php?details=' . $fetch_book['bid'] : 'login.php'; ?>">
                             <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
                         </a>
                         <div class="book-name"><?php echo $fetch_book['name']; ?></div>
                         <div class="author">by <?php echo $fetch_book['author']; ?></div>
                         <div class="stars">⭐⭐⭐⭐⭐</div>
-                        <div class="price">₹<?php echo number_format($discounted_price, 2); ?>
-                            <span class="old-price">₹<?php echo number_format($fetch_book['price'], 2); ?></span>
-                        </div>
-                        <form action="" method="POST">
-                            <input type="hidden" name="book_name" value="<?php echo $fetch_book['name'] ?>">
-                            <input type="hidden" name="book_image" value="<?php echo $fetch_book['image'] ?>">
-                            <input type="hidden" name="book_price" value="<?php echo $fetch_book['price'] ?>">
-                            <button name="add_to_cart"><img src="./images/cart.png" alt="Add to cart"></button>
-                            &nbsp; | 
-                            <a href="login.php?details=<?php echo $fetch_book['bid']; ?>" class="update_btn">Know More</a>
-                        </form>
+                        <div class="price">₹<?php echo number_format($fetch_book['price'], 2); ?></div>
                     </div>
             <?php
                 }
             } else {
-                echo '<p class="empty">No Books Available!</p>';
+                echo '<p class="empty text-center">No Knowledge Books Available!</p>';
             }
             ?>
         </div>
@@ -530,6 +579,10 @@ if (mysqli_num_rows($select_book) > 0) {
         <div class="swiper-button-next"></div>
     </div>
 </section>
+
+
+
+
 
 <div class="banner"></div>
 
@@ -587,7 +640,7 @@ if (mysqli_num_rows($select_book) > 0) {
 </section>
 
 <section class="featured-authors">
-<section id="Magical">
+    <section >
         <div class="container-fluid mx-auto  ">
             <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
             
@@ -595,47 +648,47 @@ if (mysqli_num_rows($select_book) > 0) {
             </h2>
         </div>
     </section>
-    <div class="swiper">
+    <div class="swiper mt-5">
         <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+            <div class="swiper-slidea">
+                <img src="https://www.frontlist.in/storage/ckeditor/1709706495_Top_20_Indian_Authors_and_Their_Books_-_Must_Read.jpg" 
                      alt="Author Image" class="author-img">
-                <div class="author-name">N. H. Apte</div>
+                <div class="author-name">Mahatma Gandhi </div>
             </div>
-            <div class="swiper-slide">
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+            <div class="swiper-slidea">
+                <img src="https://www.frontlist.in/storage/ckeditor/1709706543_Top_20_Indian_Authors_and_Their_Books_-_Must_Read_(1).jpg" 
                      alt="Author Image" class="author-img">
-                <div class="author-name">Author Name 2</div>
+                <div class="author-name">R.K. Narayan</div>
             </div>
-            <div class="swiper-slide">
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+            <div class="swiper-slidea">
+                <img src="https://www.frontlist.in/storage/ckeditor/1709706588_Top_20_Indian_Authors_and_Their_Books_-_Must_Read_(2).jpg" 
                      alt="Author Image" class="author-img">
-                <div class="author-name">Author Name 2</div>
+                <div class="author-name">Rohinton Mistry</div>
             </div>
-            <div class="swiper-slide">
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+            <div class="swiper-slidea">
+                <img src="https://www.frontlist.in/storage/ckeditor/1709706678_Top_20_Indian_Authors_and_Their_Books_-_Must_Read_(3).jpg" 
                      alt="Author Image" class="author-img">
-                <div class="author-name">Author Name 2</div>
+                <div class="author-name"> Salman Rushdie </div>
             </div>
-            <div class="swiper-slide">
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+            <div class="swiper-slidea">
+                <img src="https://www.frontlist.in/storage/ckeditor/1709706733_Top_20_Indian_Authors_and_Their_Books_-_Must_Read_(4).jpg" 
                      alt="Author Image" class="author-img">
-                <div class="author-name">Author Name 2</div>
+                <div class="author-name">Jhumpa Lahiri</div>
             </div>
-            <div class="swiper-slide">
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+            <div class="swiper-slidea">
+                <img src="https://www.frontlist.in/storage/ckeditor/1709706811_Top_20_Indian_Authors_and_Their_Books_-_Must_Read_(5).jpg" 
                      alt="Author Image" class="author-img">
-                <div class="author-name">Author Name 2</div>
+                <div class="author-name">Vikram Seth</div>
             </div>
-            <div class="swiper-slide">
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
+            <div class="swiper-slidea">
+                <img src="https://www.frontlist.in/storage/ckeditor/1709707383_Top_20_Indian_Authors_and_Their_Books_-_Must_Read_(7).jpg" 
                      alt="Author Image" class="author-img">
-                <div class="author-name">Author Name 2</div>
+                <div class="author-name">Arundhati Roy</div>
             </div>
-            <div class="swiper-slide">
+            <div class="swiper-slidea">
                 <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NH_Apte.jpg/168px-NH_Apte.jpg" 
                      alt="Author Image" class="author-img">
-                <div class="author-name">Author Name 2</div>
+                <div class="author-name">A.t.Apte </div>
             </div>
             <!-- Add more authors dynamically later -->
         </div>

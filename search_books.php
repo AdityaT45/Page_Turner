@@ -77,7 +77,7 @@ if (isset($_POST['add_to_cart'])) {
          font-size: 18px;
          border-radius: 5px;
          text-transform: capitalize;
-         background-color: rgb(0, 167, 245);
+         background-color:  #0f3859;
       }
 
       .message {
@@ -122,7 +122,7 @@ if (isset($_POST['add_to_cart'])) {
    </style>
 </head>
 
-<body style="background-color:lightgrey;">
+<body style="background-color:#fdfce5">
    <?php include 'index_header.php'; ?>
 
    <?php
