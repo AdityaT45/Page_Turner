@@ -105,7 +105,7 @@ if (isset($_POST['update_profile'])) {
         }
     </style>
 </head>
-<body>
+<body style="background-color:#fdfce5">
 
 <?php include 'ds_header.php'; ?>
 

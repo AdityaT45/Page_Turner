@@ -125,7 +125,7 @@ $order_id = $order['id'];
       justify-self: center;
     }
 
-    input[type=text],
+    input[type=text],[type=email],
     select {
       width: 100%;
       margin-bottom: 20px;
@@ -313,7 +313,7 @@ $order_id = $order['id'];
     "theme": {
         "color": "#0f3859"
     }
-};
+    };
 
         var rzp = new Razorpay(options);
         rzp.open();

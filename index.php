@@ -313,14 +313,14 @@ if (isset($_POST['add_to_cart'])) {
 
 if (isset($_SESSION['user_name'])) {
     echo '<div>
-             <h2 class="m-8 font-extrabold text-4xl text-center bg-light p-1" style="color:#0f3859;">
-                 Welcome ' . $_SESSION['user_name'] . ', start your book shopping!
+             <h2 class="m-8 font-extrabold text-4xl text-center bg-light p-1 mt-3" style="color:#0f3859;">
+                 Welcome <span class="text-danger">' . $_SESSION['user_name'] . '</span>, start your book shopping!
              </h2>
              <i class="fas fa-times" onclick="this.parentElement.style.display=\'none\'"></i>
           </div>';
 } else {
     echo '<div>
-             <h2 class=" m-8 font-extrabold text-4xl text-center bg-red-600 text-white p-2">
+             <h2 class=" m-8 font-extrabold text-4xl text-center bg-red-600 text-danger p-2 mt-3">
                  Please log in to start shopping.
              </h2>
           </div>';
@@ -638,6 +638,189 @@ if (isset($_SESSION['user_name'])) {
         <div class="swiper-button-next"></div>
     </div>
 </section>
+
+
+<section id="Sci-Fi">
+        <div class="container-fluid mx-auto  ">
+            <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
+            
+            Sci-Fi
+            </h2>
+        </div>
+    </section>
+    <section class="carousel-container">
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <?php
+            session_start(); // Ensure session is started
+
+            // Shuffle Sci-Fi books randomly
+            $select_magical = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='Sci-Fi' ORDER BY RAND() LIMIT 12") or die('Query failed');
+
+            if (mysqli_num_rows($select_magical) > 0) {
+                while ($fetch_book = mysqli_fetch_assoc($select_magical)) {
+            ?>
+                    <div class="swiper-slide">
+                        <a href="<?php echo isset($_SESSION['user_id']) ? 'book_details.php?details=' . $fetch_book['bid'] : 'login.php'; ?>">
+                            <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
+                        </a>
+                        <div class="book-name"><?php echo $fetch_book['name']; ?></div>
+                        <div class="author">by <?php echo $fetch_book['author']; ?></div>
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <div class="price">₹<?php echo number_format($fetch_book['price'], 2); ?></div>
+                    </div>
+            <?php
+                }
+            } else {
+                echo '<p class="empty text-center">No Sci-Fi Books Available!</p>';
+            }
+            ?>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+
+
+
+
+<section id="Love ">
+        <div class="container-fluid mx-auto  ">
+            <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
+            
+            Love 
+            </h2>
+        </div>
+    </section>
+    <section class="carousel-container">
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <?php
+            session_start(); // Ensure session is started
+
+            // Shuffle Love  books randomly
+            $select_magical = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='Love ' ORDER BY RAND() LIMIT 12") or die('Query failed');
+
+            if (mysqli_num_rows($select_magical) > 0) {
+                while ($fetch_book = mysqli_fetch_assoc($select_magical)) {
+            ?>
+                    <div class="swiper-slide">
+                        <a href="<?php echo isset($_SESSION['user_id']) ? 'book_details.php?details=' . $fetch_book['bid'] : 'login.php'; ?>">
+                            <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
+                        </a>
+                        <div class="book-name"><?php echo $fetch_book['name']; ?></div>
+                        <div class="author">by <?php echo $fetch_book['author']; ?></div>
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <div class="price">₹<?php echo number_format($fetch_book['price'], 2); ?></div>
+                    </div>
+            <?php
+                }
+            } else {
+                echo '<p class="empty text-center">No Love  Books Available!</p>';
+            }
+            ?>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+
+
+<div class="banner"></div>
+
+<section id="Health  ">
+        <div class="container-fluid mx-auto  ">
+            <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
+            
+            Health  
+            </h2>
+        </div>
+    </section>
+    <section class="carousel-container">
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <?php
+            session_start(); // Ensure session is started
+
+            // Shuffle Health   books randomly
+            $select_magical = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='Health  ' ORDER BY RAND() LIMIT 12") or die('Query failed');
+
+            if (mysqli_num_rows($select_magical) > 0) {
+                while ($fetch_book = mysqli_fetch_assoc($select_magical)) {
+            ?>
+                    <div class="swiper-slide">
+                        <a href="<?php echo isset($_SESSION['user_id']) ? 'book_details.php?details=' . $fetch_book['bid'] : 'login.php'; ?>">
+                            <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
+                        </a>
+                        <div class="book-name"><?php echo $fetch_book['name']; ?></div>
+                        <div class="author">by <?php echo $fetch_book['author']; ?></div>
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <div class="price">₹<?php echo number_format($fetch_book['price'], 2); ?></div>
+                    </div>
+            <?php
+                }
+            } else {
+                echo '<p class="empty text-center">No Health   Books Available!</p>';
+            }
+            ?>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+
+
+
+
+<section id="Novel">
+        <div class="container-fluid mx-auto  ">
+            <h2 class="m-8 font-extrabold text-4xl text-center border-t-2 bg-light p-1" style="color:#0f3859;">
+            
+            Novel
+            </h2>
+        </div>
+    </section>
+    <section class="carousel-container">
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            <?php
+            session_start(); // Ensure session is started
+
+            // Shuffle Novel books randomly
+            $select_magical = mysqli_query($conn, "SELECT * FROM `book_info` WHERE category='Novel' ORDER BY RAND() LIMIT 12") or die('Query failed');
+
+            if (mysqli_num_rows($select_magical) > 0) {
+                while ($fetch_book = mysqli_fetch_assoc($select_magical)) {
+            ?>
+                    <div class="swiper-slide">
+                        <a href="<?php echo isset($_SESSION['user_id']) ? 'book_details.php?details=' . $fetch_book['bid'] : 'login.php'; ?>">
+                            <img src="added_books/<?php echo $fetch_book['image']; ?>" alt="Book Image" class="book-img">
+                        </a>
+                        <div class="book-name"><?php echo $fetch_book['name']; ?></div>
+                        <div class="author">by <?php echo $fetch_book['author']; ?></div>
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <div class="price">₹<?php echo number_format($fetch_book['price'], 2); ?></div>
+                    </div>
+            <?php
+                }
+            } else {
+                echo '<p class="empty text-center">No Novel Books Available!</p>';
+            }
+            ?>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+</section>
+
 
 <section class="featured-authors">
     <section >

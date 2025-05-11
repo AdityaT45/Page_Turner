@@ -209,7 +209,7 @@
     
 </head>
 
-<body>
+<body >
     <header>
     <div class="logo">
             <a href="index.php"><span class="text-warning">Page</span> <span class="me text-light">Turner</span></a>

@@ -24,7 +24,7 @@ $ds_name = $ds_data['name'];
     <link rel="stylesheet" href="./css/admin.css">
     <style>
         .header {
-            background-color: #333;
+            background-color: #092a42;
             color: white;
             padding: 15px;
             text-align: center;

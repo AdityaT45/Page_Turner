@@ -1,11 +1,66 @@
+<?php
+include 'config.php';
+session_start();
+
+// Redirect if admin not logged in
+if (!isset($_SESSION['admin_id'])) {
+    header('location: admin_login.php');
+    exit();
+}
+
+$message = "";
+
+// Handle form submission
+if (isset($_POST['add_books'])) {
+    $bname = mysqli_real_escape_string($conn, $_POST['bname']);
+    $author = mysqli_real_escape_string($conn, $_POST['author']);
+    $price = $_POST['price'];
+    $category = $_POST['category'];
+    $language = mysqli_real_escape_string($conn, $_POST['language']);
+    $publisher = mysqli_real_escape_string($conn, $_POST['publisher']);
+    $binding = mysqli_real_escape_string($conn, $_POST['binding']);
+    $no_of_pages = $_POST['no_of_pages'];
+    $weight = $_POST['weight'];
+    $publisher_date = $_POST['publisher_date'];
+    $height = $_POST['height'];
+    $spine_width = $_POST['spine_width'];
+    $width = $_POST['width'];
+    $description = mysqli_real_escape_string($conn, $_POST['description']);
+    $date = date("Y-m-d");
+
+    // Handle image upload
+    $image_name = $_FILES['image']['name'];
+    $image_tmp = $_FILES['image']['tmp_name'];
+    $image_folder = 'added_books/' . $image_name;
+
+    // Check if image is valid
+    if (move_uploaded_file($image_tmp, $image_folder)) {
+        // Insert book into database
+        $insert = mysqli_query($conn, "INSERT INTO book_info 
+            (name, author, price, category, language, publisher, binding, no_of_pages, weight, publisher_date, height, spine_width, width, image, description, date) 
+            VALUES 
+            ('$bname', '$author', '$price', '$category', '$language', '$publisher', '$binding', '$no_of_pages', '$weight', '$publisher_date', '$height', '$spine_width', '$width', '$image_name', '$description', '$date')");
+
+        if ($insert) {
+            $message = "Book added successfully!";
+        } else {
+            $message = "Error adding book: " . mysqli_error($conn);
+        }
+    } else {
+        $message = "Failed to upload image.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Books - Page Turner</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.9.6/lottie.min.js"></script>
-    <style>
+
+        <style>
         * {
             margin: 0;
             padding: 0;
@@ -108,14 +163,14 @@
         </div>
         <div class="form-side">
             <h2>Add a New Book</h2>
-            <?php if (isset($message)) { echo "<p class='error-message'>$message</p>"; } ?>
+            <?php if ($message) echo "<p class='error-message'>$message</p>"; ?>
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <input type="text" name="bname" placeholder="Book Name" required>
                     <input type="text" name="author" placeholder="Author Name" required>
                 </div>
                 <div class="form-group">
-                    <input type="number" min="0" name="price" placeholder="Price" required>
+                    <input type="number" name="price" placeholder="Price" required>
                     <select name="category" required>
                         <option value="">Select Category</option>
                         <option value="Adventure">Adventure</option>
@@ -145,13 +200,14 @@
                 </div>
                 <div class="form-group">
                     <input type="number" name="width" placeholder="Width (cm)" required>
-                    <input type="file" name="image" required>
+                    <input type="file" name="image" accept="image/*" required>
                 </div>
                 <textarea name="description" placeholder="Book Description" required></textarea>
                 <button type="submit" name="add_books">Add Book</button>
             </form>
         </div>
     </div>
+
     <script>
         lottie.loadAnimation({
             container: document.getElementById('lottie-animation'),

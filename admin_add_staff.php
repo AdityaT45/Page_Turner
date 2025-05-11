@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO staff (name, email, password) VALUES ('$name', '$email', '$password')";
     if (mysqli_query($conn, $sql)) {
         // Redirect to manage_staff.php after successful insertion
-        header("Location: manage_staff.php");
+        header("Location: admin_manage_staff.php");
         exit();
     } else {
         $message = "❌ Error: " . mysqli_error($conn);

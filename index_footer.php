@@ -117,7 +117,7 @@
     </div>
 
     <div class="footer-bottom">
-        <p>Designed By <span>Aditya Todmal</span> | Copyright © 2025 All Rights Reserved</p>
+        <p>Developed By <span>Aditya Todmal</span> | Copyright © 2025 All Rights Reserved</p>
     </div>
 </footer>
 </div>

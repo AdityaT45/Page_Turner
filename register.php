@@ -16,7 +16,7 @@ session_start();
         .image-side { flex: 1; background: #0f3859; padding: 2rem; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; }
         #lottie-animation { width: 350px; height: 350px; }
         .form-side { flex: 1; padding: 3rem; }
-        h1 { text-align: center; margin-bottom: 1rem; color: #333; }
+        h1 { text-align: center; margin-bottom: 1rem; }
         input { width: 100%; padding: 10px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 5px; outline: none; transition: border-color 0.3s; }
         input:focus { border-color: #0f3859; }
         button { width: 100%; padding: 12px; background: #0f3859; color: white; border: none; border-radius: 25px; cursor: pointer; font-size: 16px; font-weight: bold; transition: transform 0.3s, background 0.3s; }
@@ -58,7 +58,7 @@ session_start();
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: 'images/Animation - 1741021320383.json'
+            path: 'images/Animation - 1745994410232.json'
         });
     </script>
 </body>

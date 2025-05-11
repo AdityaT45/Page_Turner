@@ -59,10 +59,13 @@ $top_books = mysqli_query($conn, "SELECT name, COUNT(*) AS order_count FROM conf
         .card {
             width: 23%;
             padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            background:rgba(224, 240, 255, 0.76);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    height: inherit;
+            
         }
         .card h3 {
             font-size: 18px;
@@ -99,26 +102,9 @@ $top_books = mysqli_query($conn, "SELECT name, COUNT(*) AS order_count FROM conf
     padding-bottom: 10px;
 }
 
-.card {
-    width: 18%; /* Adjust width to fit all in one row */
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    position: relative;
-}
 
-.card h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
 
-.card p {
-    font-size: 22px;
-    font-weight: bold;
-    color: #007bff;
-}
+
 
 /* Style for Manage Button */
 .manage-btn {
@@ -148,67 +134,67 @@ $top_books = mysqli_query($conn, "SELECT name, COUNT(*) AS order_count FROM conf
   
 
     <div class="dashboard-cards">
-    <?php
-// Fetch total books count
-$total_books = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS count FROM book_info"))['count'];
-?>
+     <?php
+                // Fetch total books count
+                $total_books = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS count FROM book_info"))['count'];
+                ?>
 
-<div class="card">
-    <h3>Manage Books</h3>
-    <p><?php echo $total_books; ?></p>
-    <button class="manage-btn" onclick="location.href='admin_add_book.php'">Add Book</button>
-    <button class="manage-btn" onclick="location.href='admin_manage_books.php'">Manage Books</button>
-</div>
-
-
-
-
-<?php
-
-// Fetch total number of delivery staff
-$query = mysqli_query($conn, "SELECT COUNT(*) AS total_staff FROM staff");
-$result = mysqli_fetch_assoc($query);
-$total_staff = $result['total_staff'];
-?>
-<div class="card">
-    <h3>Manage Staff Member</h3>
-    <p> <?php echo $total_staff; ?></p>
-    <button class="manage-btn" onclick="location.href='admin_add_staff.php'">Add Staff</button>
-    <button class="manage-btn" onclick="location.href='admin_manage_staff.php'">Manage Staff</button>
-</div>
+        <div class="card">
+            <h3>Manage Books</h3>
+            <p><?php echo $total_books; ?></p>
+            <button class="manage-btn" onclick="location.href='admin_add_book.php'">Add Book</button>
+            <button class="manage-btn" onclick="location.href='admin_manage_books.php'">Manage Books</button>
+        </div>
 
 
 
 
-<?php
-include 'config.php';
+        <?php
 
-// Fetch total number of delivery staff
-$query = mysqli_query($conn, "SELECT COUNT(*) AS total_staff FROM delivery_staff");
-$result = mysqli_fetch_assoc($query);
-$total_staff = $result['total_staff'];
-?>
-<div class="card">
-    <h3>Manage Delivery Staff</h3>
-    <p><?php echo $total_staff; ?></p>
-    <button class="manage-btn" onclick="location.href='admin_add_delivery_staff.php'">Add Delivery Staff</button>
-    <button class="manage-btn" onclick="location.href='admin_manage_delivery_staff.php'">Manage Delivery Staff</button>
-</div>
+        // Fetch total number of delivery staff
+        $query = mysqli_query($conn, "SELECT COUNT(*) AS total_staff FROM staff");
+        $result = mysqli_fetch_assoc($query);
+        $total_staff = $result['total_staff'];
+        ?>
+        <div class="card">
+            <h3>Manage Staff Member</h3>
+            <p> <?php echo $total_staff; ?></p>
+            <button class="manage-btn" onclick="location.href='admin_add_staff.php'">Add Staff</button>
+            <button class="manage-btn" onclick="location.href='admin_manage_staff.php'">Manage Staff</button>
+        </div>
 
-<?php
 
-// Fetch total number of users
-$query = mysqli_query($conn, "SELECT COUNT(*) AS total_users FROM users_info");
-$result = mysqli_fetch_assoc($query);
-$total_users = $result['total_users'];
 
-?>
-<div class="card">
-    <h3>Manage Users</h3>
-    <p>Total Users: <?php echo $total_users; ?></p>
-    
-    <button class="manage-btn" onclick="location.href='admin_manage_users.php'">Manage Users</button>
-</div>
+
+        <?php
+        include 'config.php';
+
+        // Fetch total number of delivery staff
+        $query = mysqli_query($conn, "SELECT COUNT(*) AS total_staff FROM delivery_staff");
+        $result = mysqli_fetch_assoc($query);
+        $total_staff = $result['total_staff'];
+        ?>
+        <div class="card">
+            <h3>Manage Delivery Staff</h3>
+            <p><?php echo $total_staff; ?></p>
+            <button class="manage-btn" onclick="location.href='admin_add_delivery_staff.php'">Add Delivery Staff</button>
+            <button class="manage-btn" onclick="location.href='admin_manage_delivery_staff.php'">Manage Delivery Staff</button>
+        </div>
+
+        <?php
+
+        // Fetch total number of users
+        $query = mysqli_query($conn, "SELECT COUNT(*) AS total_users FROM users_info");
+        $result = mysqli_fetch_assoc($query);
+        $total_users = $result['total_users'];
+
+        ?>
+        <div class="card">
+            <h3>Manage Users</h3>
+            <p>Total Users: <?php echo $total_users; ?></p>
+            
+            <button class="manage-btn" onclick="location.href='admin_manage_users.php'">Manage Users</button>
+        </div>
 
 
     
@@ -218,12 +204,12 @@ $total_users = $result['total_users'];
 
     <!-- Summary Cards -->
     <div class="dashboard-cards">
-    <div class="card">
+    <div class="card" Style=" background:rgba(255, 218, 240, 0.76);">
         <h3>Total Orders</h3>
         <p><?php echo $total_orders; ?></p>
         <button class="manage-btn" onclick="location.href='admin_manage_orders.php'">Manage</button>
     </div>
-    <div class="card">
+    <div class="card" Style=" background:rgba(255, 255, 188, 0.76);">
         <h3>Pending Orders</h3>
         <p><?php echo $pending_orders; ?></p>
         <button class="manage-btn" onclick="location.href='admin_pending_orders.php'">Manage</button>
@@ -233,12 +219,12 @@ $total_users = $result['total_users'];
         <p><?php echo $assigned_orders; ?></p>
         <button class="manage-btn" onclick="location.href='admin_assigned_orders.php'">Manage</button>
     </div>
-    <div class="card">
+    <div class="card" Style=" background:rgba(188, 255, 198, 0.76);">
         <h3>Delivered Orders</h3>
         <p><?php echo $delivered_orders; ?></p>
         <button class="manage-btn" onclick="location.href='admin_delivered_orders.php'">Manage</button>
     </div>
-    <div class="card">
+    <div class="card" Style=" background:rgba(255, 232, 188, 0.76);">
         <h3>Total Earnings</h3>
         <p>₹<?php echo number_format($total_earnings, 2); ?></p>
         <button class="manage-btn" onclick="location.href='admin_earnings_report.php'">View Report</button>
@@ -246,9 +232,9 @@ $total_users = $result['total_users'];
 </div>
 
 
-    <!-- Chart for Orders -->
-    <h3>Order Statistics</h3>
-    <canvas id="orderChart"></canvas>
+
+
+   
 
     <!-- Recent Orders -->
     <h3>Recent Orders</h3>
@@ -313,6 +299,16 @@ $total_users = $result['total_users'];
         <?php } ?>
     </table>
 
+</div>
+<div class="container " Style=" width:50%">
+<div class="row">
+    <div class="col-6">
+         <!-- Chart for Orders -->
+    <h3>Order Statistics</h3>
+    <canvas id="orderChart"></canvas>
+    </div>
+    <div class="col-6"></div>
+</div>
 </div>
 
 <script>

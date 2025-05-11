@@ -39,7 +39,7 @@ if (isset($_POST['update_book'])) {
     if ($_FILES['image']['name']) {
         $image = $_FILES['image']['name'];
         $image_tmp = $_FILES['image']['tmp_name'];
-        $image_folder = 'uploads/' . $image;
+        $image_folder = 'added_books/' . $image;
         move_uploaded_file($image_tmp, $image_folder);
         $update_query = "UPDATE book_info SET name='$name', author='$author', price='$price', category='$category',
                         language='$language', publisher='$publisher', binding='$binding', no_of_pages='$no_of_pages',
@@ -162,7 +162,7 @@ if (isset($_POST['update_book'])) {
 
         <label>Image:</label>
         <input type="file" name="image" accept="image/*" onchange="previewImage(event)">
-        <img src="uploads/<?php echo $book['image']; ?>" class="preview-img" id="preview">
+        <img src="added_books/<?php echo $book['image']; ?>" class="preview-img" id="preview">
 
         <label>Description:</label>
         <textarea name="description" rows="3" ><?php echo $book['description']; ?></textarea>

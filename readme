@@ -1,31 +1,27 @@
-<style>
+    <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         body {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background:#fdfce5;
+            background: #fdfce5;
         }
-
-        /* Split Layout Form */
         .split-form {
             display: flex;
             background: white;
-            border-radius: 20px;
+            border-radius: 15px;
             overflow: hidden;
             width: 100%;
-            max-width: 800px;
+            max-width: 950px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
-
-        .split-form .image-side {
+        .image-side {
             flex: 1;
             background: #0f3859;
             padding: 2rem;
@@ -37,42 +33,47 @@
             text-align: center;
             position: relative;
         }
-
-        /* Lottie Animation */
         #lottie-animation {
-            width: 350px;
-            height: 350px;
+            width: 280px;
+            height: 280px;
         }
-
-        .split-form .form-side {
+        .form-side {
             flex: 1;
-            padding: 3rem;
+            padding: 2rem;
         }
-
-        .split-form h2 {
+        .form-side h2 {
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             color: #333;
         }
-
-        .split-form input {
-            width: 100%;
-            padding: 1rem;
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .form-group input, 
+        .form-group select, 
+        textarea {
+            flex: 1;
+            padding: 0.8rem;
             margin: 0.5rem 0;
             border: none;
             border-bottom: 2px solid #eee;
             outline: none;
             transition: border-color 0.3s;
         }
-
-        .split-form input:focus {
+        input:focus, select:focus, textarea:focus {
             border-bottom-color: #0f3859;
         }
-
-        .split-form button {
+        textarea {
+            width: 100%;
+            resize: none;
+            height: 60px;
+        }
+        button {
             width: 100%;
             padding: 1rem;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
             background: #0f3859;
             color: white;
             border: none;
@@ -81,70 +82,13 @@
             font-weight: bold;
             transition: transform 0.3s;
         }
-
-        .split-form button:hover {
+        button:hover {
             transform: translateY(-2px);
         }
-
         .error-message {
             text-align: center;
             color: red;
             font-weight: bold;
             margin-bottom: 1rem;
-        }
-
-        .link {
-            text-decoration: none;
-            color: #FF6B6B;
-            font-weight: bold;
-        }
-
-        .link:hover {
-            text-decoration: underline;
-        }
-        form {
-        width: 100%;
-        max-width: 350px;
-        margin: auto;
-        display: flex;
-        flex-direction: column;
-        }
-
-        label {
-            font-weight: bold;
-            margin-top: 10px;
-            color: #0f3859;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 15px 0;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        input:focus {
-            border-color: #0f3859;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #0f3859;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: transform 0.3s, background 0.3s;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            background: #092a42;
         }
     </style>

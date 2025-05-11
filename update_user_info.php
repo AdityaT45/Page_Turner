@@ -150,7 +150,7 @@ body {
 h1 { 
     text-align: center; 
     margin-bottom: 1rem; 
-    color: #333; 
+    /* color: #333;  */
 }
 
 .input-group { 

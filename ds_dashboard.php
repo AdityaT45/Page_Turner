@@ -31,17 +31,17 @@ $earnings = mysqli_fetch_assoc($earnings_query)['total'] ?? 0;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delivery Staff Dashboard</title>
-    <link rel="stylesheet" href="./css/admin.css">
+
 </head>
-<body style="background-color: lightgrey;">
+<body style="background-color:#fdfce5">
     <?php include 'ds_header.php'; ?>
     <br>
 
     <div class="main_box">
         <!-- Assigned Orders -->
-        <div class="card" style="width: 15rem;">
-            <img class="card-img-top" src="./images/orders.png" alt="Assigned Orders">
-            <div class="card-body">
+        <div class="card text-center" style="width: 15rem;">
+          
+            <div class="card-body ">
                 <h5 class="card-title">Assigned Orders</h5>
                 <p class="card-text" style="font-size: 20px; font-weight: bold; color: #007bff;">
                     <?php echo $assigned_orders; ?>
@@ -53,7 +53,7 @@ $earnings = mysqli_fetch_assoc($earnings_query)['total'] ?? 0;
 
         <!-- Delivered Orders -->
         <div class="card" style="width: 15rem;">
-            <img class="card-img-top" src="./images/delivered.png" alt="Delivered Orders">
+         
             <div class="card-body">
                 <h5 class="card-title">Delivered Orders</h5>
                 <p class="card-text" style="font-size: 20px; font-weight: bold; color: #28a745;">
@@ -64,8 +64,8 @@ $earnings = mysqli_fetch_assoc($earnings_query)['total'] ?? 0;
         </div>
 
         <!-- Earnings -->
-        <div class="card" style="width: 15rem;">
-            <img class="card-img-top" src="./images/earnings.png" alt="Earnings">
+        <div class="card " style="width: 15rem;">
+           
             <div class="card-body">
                 <h5 class="card-title">Total Earnings (₹)</h5>
                 <p class="card-text" style="font-size: 20px; font-weight: bold; color: #007bff;">
@@ -77,7 +77,7 @@ $earnings = mysqli_fetch_assoc($earnings_query)['total'] ?? 0;
 
         <!-- Profile -->
         <div class="card" style="width: 15rem;">
-            <img class="card-img-top" src="./images/profile.png" alt="Profile">
+           
             <div class="card-body">
                 <h5 class="card-title">Manage Profile</h5>
                 <p class="card-text">Update your personal details.</p>

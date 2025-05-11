@@ -72,7 +72,7 @@ $order = mysqli_fetch_assoc($result);
         }
     </style>
 </head>
-<body>
+<body style="background-color:#fdfce5">
 
 <?php include 'ds_header.php'; ?>
 

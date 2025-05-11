@@ -156,6 +156,12 @@ if (isset($_POST['login'])) {
             font-weight: bold;
         }
 
+        .linka {
+          
+            background: #FF6B6B;
+          
+        }
+
         .link:hover {
             text-decoration: underline;
         }
@@ -235,7 +241,11 @@ if (isset($_POST['login'])) {
                 Don't have an account? <a class="link" href="register.php">Register</a>
             </p>
 
-            <a class="link" href="ds_login.php">ds login</a>
+            <a  href="ds_login.php" >
+        <button type="submit" style="background: #092a42; height:50px ;width:100%;" class="p-5" name="login" >login as a delivery staff </button></a>
+         <a  href="ms_login.php" >
+        <button type="submit" style="background: #092a42; height:50px ;width:100%;" class="p-5" name="login" >login as a managing staff </button></a>
+        
         </div>
     </div>
 

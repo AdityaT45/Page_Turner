@@ -17,8 +17,8 @@ if (isset($_GET['delete'])) {
 
     // Fetch book image path
     $get_image = mysqli_fetch_assoc(mysqli_query($conn, "SELECT image FROM book_info WHERE bid = '$bid'"));
-    if ($get_image && file_exists("uploads/" . $get_image['image'])) {
-        unlink("uploads/" . $get_image['image']); // Delete the image file
+    if ($get_image && file_exists("added_books/" . $get_image['image'])) {
+        unlink("added_books/" . $get_image['image']); // Delete the image file
     }
 
     // Delete book from database

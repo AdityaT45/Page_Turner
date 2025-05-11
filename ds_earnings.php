@@ -64,7 +64,7 @@ $total_earnings = $total_orders * $fixed_earning_per_order;
         }
     </style>
 </head>
-<body>
+<body style="background-color:#fdfce5">
 
 <?php include 'ds_header.php'; ?>
 

@@ -67,7 +67,7 @@ if (mysqli_num_rows($result) > 0) {
         }
     </style>
 </head>
-<body>
+<body style="background-color:#fdfce5">
 
 <?php include 'ds_header.php'; ?>
 

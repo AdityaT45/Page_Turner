@@ -69,7 +69,7 @@ $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
         }
     </style>
 </head>
-<body>
+<body style="background-color:#fdfce5">
 
 <?php include 'ds_header.php'; ?>
 
