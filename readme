@@ -1,94 +1,125 @@
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #fdfce5;
-        }
-        .split-form {
-            display: flex;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            width: 100%;
-            max-width: 950px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        .image-side {
-            flex: 1;
-            background: #0f3859;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-            position: relative;
-        }
-        #lottie-animation {
-            width: 280px;
-            height: 280px;
-        }
-        .form-side {
-            flex: 1;
-            padding: 2rem;
-        }
-        .form-side h2 {
-            text-align: center;
-            margin-bottom: 1.2rem;
-            color: #333;
-        }
-        .form-group {
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-        .form-group input, 
-        .form-group select, 
-        textarea {
-            flex: 1;
-            padding: 0.8rem;
-            margin: 0.5rem 0;
-            border: none;
-            border-bottom: 2px solid #eee;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        input:focus, select:focus, textarea:focus {
-            border-bottom-color: #0f3859;
-        }
-        textarea {
-            width: 100%;
-            resize: none;
-            height: 60px;
-        }
-        button {
-            width: 100%;
-            padding: 1rem;
-            margin-top: 1rem;
-            background: #0f3859;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.3s;
-        }
-        button:hover {
-            transform: translateY(-2px);
-        }
-        .error-message {
-            text-align: center;
-            color: red;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-    </style>
+📚 PageTurner – Online E-commerce Book Shop
+PageTurner is a full-featured online book store built using PHP, MySQL, HTML, CSS, and Bootstrap. It offers a seamless and secure shopping experience for book lovers while enabling efficient management for admins and staff.
+The platform includes admin, user, and staff roles, each with customized access and functionalities.
+
+🔧 Technologies Used
+Frontend: HTML5, CSS3, Bootstrap 4
+
+Backend: PHP (Core PHP)
+
+Database: MySQL
+
+Payment Gateway: Razorpay
+
+Hosting Ready: XAMPP/LAMP/WAMP supported
+
+🌟 Key Features
+🔐 Authentication & Role Management
+Role-based login for:
+
+Admin
+
+Staff
+
+User
+
+🛒 User Features
+Browse books by category, author, or title
+
+Search functionality with filters
+
+Add books to cart and wishlist
+
+Place orders with Razorpay integration
+
+View order history and invoice
+
+👨‍💼 Admin Features
+Admin Dashboard with analytics
+
+Manage:
+
+Book inventory (CRUD)
+
+Registered users
+
+Staff accounts
+
+Order status and delivery tracking
+
+🧑‍🔧 Staff Features
+View and manage book listings
+
+Update delivery status
+
+Assist in inventory operations
+
+💳 Payment Integration
+Razorpay used for fast, secure, and reliable payments
+
+
+🏁 Getting Started
+✅ Prerequisites
+PHP 7.x or later
+
+MySQL
+
+Apache Server (XAMPP/LAMP/WAMP)
+
+Composer (optional for dependencies)
+
+⚙️ Installation Steps
+Clone the repository:
+
+bash
+Copy
+Edit
+git clone https://github.com/yourusername/PageTurner-Ecommerce-Bookshop.git
+Import the database:
+
+Open phpMyAdmin
+
+Create a new database named pageturner
+
+Import the pageturner.sql file from the database folder
+
+Configure database in config.php:
+
+$host = "localhost";
+$user = "root";
+$pass = "";
+$db = "pageturner";
+$conn = mysqli_connect($host, $user, $pass, $db);
+Run the project:
+
+Start Apache and MySQL using XAMPP/WAMP
+
+Visit http://localhost/PageTurner
+
+
+
+📈 Future Enhancements
+Email notifications for orders
+
+Add reviews and ratings
+
+Book recommendation system
+
+Responsive mobile design improvements
+
+Advanced filtering and sorting options
+
+🤝 Contributing
+Contributions, issues, and feature requests are welcome!
+Feel free to check issues or submit a pull request.
+
+📄 License
+This project is licensed under the MIT License.
+
+🙌 Acknowledgements
+Razorpay API
+
+Bootstrap
+
+Font Awesome
+
